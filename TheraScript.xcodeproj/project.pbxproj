@@ -7,13 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A81A26461B680C35004B6F25 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81A26451B680C35004B6F25 /* ImageCache.swift */; };
+		A84526991B837CDB00515D70 /* DiagnosisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84526981B837CDB00515D70 /* DiagnosisViewController.swift */; };
+		A84AC50E1B5D751700AEBEE1 /* IconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84AC50D1B5D751700AEBEE1 /* IconViewController.swift */; };
+		A8719FB11B61418B00913FCD /* RxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8719FB01B61418B00913FCD /* RxViewController.swift */; };
+		A874DFD71B960D9700C16A6C /* PTFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A874DFD61B960D9700C16A6C /* PTFavoritesViewController.swift */; };
+		A876CB311B71059E001CE997 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A876CB301B71059E001CE997 /* MapKit.framework */; };
+		A883FCC91B8B7580002D273A /* PTMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A883FCC81B8B7580002D273A /* PTMapViewController.swift */; };
+		A88E56361B5FD9C600170159 /* TSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88E56351B5FD9C600170159 /* TSClient.swift */; };
+		A88E56381B5FDB9400170159 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88E56371B5FDB9400170159 /* CoreDataStack.swift */; };
+		A88E563A1B5FDBCB00170159 /* TSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88E56391B5FDBCB00170159 /* TSData.swift */; };
+		A8AF79E71B78E9E6004A1619 /* TherapyRxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AF79E61B78E9E6004A1619 /* TherapyRxViewController.swift */; };
+		A8B561121B752615008B9B1C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8B561111B752615008B9B1C /* Images.xcassets */; };
 		A8DA46901B559D8900FFC950 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DA468F1B559D8900FFC950 /* AppDelegate.swift */; };
 		A8DA46931B559D8900FFC950 /* TheraScript.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A8DA46911B559D8900FFC950 /* TheraScript.xcdatamodeld */; };
-		A8DA46951B559D8900FFC950 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DA46941B559D8900FFC950 /* ViewController.swift */; };
+		A8DA46951B559D8900FFC950 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DA46941B559D8900FFC950 /* InfoViewController.swift */; };
 		A8DA46981B559D8A00FFC950 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8DA46961B559D8A00FFC950 /* Main.storyboard */; };
-		A8DA469A1B559D8A00FFC950 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8DA46991B559D8A00FFC950 /* Images.xcassets */; };
 		A8DA469D1B559D8A00FFC950 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A8DA469B1B559D8A00FFC950 /* LaunchScreen.xib */; };
 		A8DA46A91B559D8A00FFC950 /* TheraScriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DA46A81B559D8A00FFC950 /* TheraScriptTests.swift */; };
+		A8DDC6D31BB1E42800550E1B /* GeneratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DDC6D21BB1E42800550E1B /* GeneratorViewController.swift */; };
+		A8E800651B94FE9200C0E5A1 /* ManualPTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E800641B94FE9200C0E5A1 /* ManualPTViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,17 +40,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A81A26451B680C35004B6F25 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		A84526981B837CDB00515D70 /* DiagnosisViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagnosisViewController.swift; sourceTree = "<group>"; };
+		A84AC50D1B5D751700AEBEE1 /* IconViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconViewController.swift; sourceTree = "<group>"; };
+		A8719FB01B61418B00913FCD /* RxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxViewController.swift; sourceTree = "<group>"; };
+		A874DFD61B960D9700C16A6C /* PTFavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTFavoritesViewController.swift; sourceTree = "<group>"; };
+		A876CB301B71059E001CE997 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A883FCC81B8B7580002D273A /* PTMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTMapViewController.swift; sourceTree = "<group>"; };
+		A88E56351B5FD9C600170159 /* TSClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSClient.swift; sourceTree = "<group>"; };
+		A88E56371B5FDB9400170159 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		A88E56391B5FDBCB00170159 /* TSData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSData.swift; sourceTree = "<group>"; };
+		A8AF79E61B78E9E6004A1619 /* TherapyRxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TherapyRxViewController.swift; sourceTree = "<group>"; };
+		A8B561111B752615008B9B1C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TheraScript.xcodeproj/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		A8DA468A1B559D8900FFC950 /* TheraScript.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheraScript.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8DA468E1B559D8900FFC950 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A8DA468F1B559D8900FFC950 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8DA46921B559D8900FFC950 /* TheraScript.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TheraScript.xcdatamodel; sourceTree = "<group>"; };
-		A8DA46941B559D8900FFC950 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A8DA46941B559D8900FFC950 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		A8DA46971B559D8A00FFC950 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		A8DA46991B559D8A00FFC950 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A8DA469C1B559D8A00FFC950 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		A8DA46A21B559D8A00FFC950 /* TheraScriptTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TheraScriptTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8DA46A71B559D8A00FFC950 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A8DA46A81B559D8A00FFC950 /* TheraScriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheraScriptTests.swift; sourceTree = "<group>"; };
+		A8DDC6D21BB1E42800550E1B /* GeneratorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratorViewController.swift; sourceTree = "<group>"; };
+		A8E800641B94FE9200C0E5A1 /* ManualPTViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManualPTViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A876CB311B71059E001CE997 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +88,7 @@
 		A8DA46811B559D8900FFC950 = {
 			isa = PBXGroup;
 			children = (
+				A876CB301B71059E001CE997 /* MapKit.framework */,
 				A8DA468C1B559D8900FFC950 /* TheraScript */,
 				A8DA46A51B559D8A00FFC950 /* TheraScriptTests */,
 				A8DA468B1B559D8900FFC950 /* Products */,
@@ -80,9 +108,21 @@
 			isa = PBXGroup;
 			children = (
 				A8DA468F1B559D8900FFC950 /* AppDelegate.swift */,
-				A8DA46941B559D8900FFC950 /* ViewController.swift */,
+				A88E56371B5FDB9400170159 /* CoreDataStack.swift */,
+				A84526981B837CDB00515D70 /* DiagnosisViewController.swift */,
+				A8DDC6D21BB1E42800550E1B /* GeneratorViewController.swift */,
+				A84AC50D1B5D751700AEBEE1 /* IconViewController.swift */,
+				A81A26451B680C35004B6F25 /* ImageCache.swift */,
+				A8DA46941B559D8900FFC950 /* InfoViewController.swift */,
+				A8E800641B94FE9200C0E5A1 /* ManualPTViewController.swift */,
+				A874DFD61B960D9700C16A6C /* PTFavoritesViewController.swift */,
+				A883FCC81B8B7580002D273A /* PTMapViewController.swift */,
+				A8719FB01B61418B00913FCD /* RxViewController.swift */,
+				A8AF79E61B78E9E6004A1619 /* TherapyRxViewController.swift */,
+				A88E56351B5FD9C600170159 /* TSClient.swift */,
+				A88E56391B5FDBCB00170159 /* TSData.swift */,
+				A8B561111B752615008B9B1C /* Images.xcassets */,
 				A8DA46961B559D8A00FFC950 /* Main.storyboard */,
-				A8DA46991B559D8A00FFC950 /* Images.xcassets */,
 				A8DA469B1B559D8A00FFC950 /* LaunchScreen.xib */,
 				A8DA46911B559D8900FFC950 /* TheraScript.xcdatamodeld */,
 				A8DA468D1B559D8900FFC950 /* Supporting Files */,
@@ -164,6 +204,11 @@
 				TargetAttributes = {
 					A8DA46891B559D8900FFC950 = {
 						CreatedOnToolsVersion = 6.3.2;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					A8DA46A11B559D8A00FFC950 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -195,9 +240,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8B561121B752615008B9B1C /* Images.xcassets in Resources */,
 				A8DA46981B559D8A00FFC950 /* Main.storyboard in Resources */,
 				A8DA469D1B559D8A00FFC950 /* LaunchScreen.xib in Resources */,
-				A8DA469A1B559D8A00FFC950 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,9 +260,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A8DA46951B559D8900FFC950 /* ViewController.swift in Sources */,
+				A8E800651B94FE9200C0E5A1 /* ManualPTViewController.swift in Sources */,
+				A8DDC6D31BB1E42800550E1B /* GeneratorViewController.swift in Sources */,
+				A874DFD71B960D9700C16A6C /* PTFavoritesViewController.swift in Sources */,
+				A883FCC91B8B7580002D273A /* PTMapViewController.swift in Sources */,
+				A8AF79E71B78E9E6004A1619 /* TherapyRxViewController.swift in Sources */,
+				A8DA46951B559D8900FFC950 /* InfoViewController.swift in Sources */,
+				A88E563A1B5FDBCB00170159 /* TSData.swift in Sources */,
+				A8719FB11B61418B00913FCD /* RxViewController.swift in Sources */,
+				A81A26461B680C35004B6F25 /* ImageCache.swift in Sources */,
 				A8DA46901B559D8900FFC950 /* AppDelegate.swift in Sources */,
 				A8DA46931B559D8900FFC950 /* TheraScript.xcdatamodeld in Sources */,
+				A84526991B837CDB00515D70 /* DiagnosisViewController.swift in Sources */,
+				A88E56381B5FDB9400170159 /* CoreDataStack.swift in Sources */,
+				A84AC50E1B5D751700AEBEE1 /* IconViewController.swift in Sources */,
+				A88E56361B5FD9C600170159 /* TSClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +470,7 @@
 				A8DA46AE1B559D8A00FFC950 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A8DA46AF1B559D8A00FFC950 /* Build configuration list for PBXNativeTarget "TheraScriptTests" */ = {
 			isa = XCConfigurationList;
@@ -421,6 +479,7 @@
 				A8DA46B11B559D8A00FFC950 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
