@@ -12,6 +12,8 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
 
     //Variables
     
+
+    
     //Outlets
     @IBOutlet weak var PTPractice: UITextField!
     @IBOutlet weak var PTAddress: UITextField!

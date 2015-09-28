@@ -94,7 +94,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
 
         //Split the subtitle string into address and phone
         var splitString: String = view.annotation.subtitle!
-        var splitArray = splitString.componentsSeparatedByString("∙")
+        var splitArray = splitString.componentsSeparatedByString(" ∙ ")
 
         //Save the data for later Core Data storage
         TSClient.sharedInstance().therapy.practiceName = view.annotation.title!

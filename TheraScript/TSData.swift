@@ -20,18 +20,21 @@ extension TSClient{
         static let userLogo = "icon"
         //The Aqua.io constants
         //Currently we're searching for either name or code
-        static let BASE_URL = "https://api.aqua.io/codes/beta/"
-        static let TOKEN_URL = "https://api.aqua.io/oauth/token"
+        static let AQUA_BASE_URL = "https://api.aqua.io/codes/beta/"
+        static let AQUA_TOKEN_URL = "https://api.aqua.io/oauth/token"
         static let ICD9 = "icd9.json"
         static let ICD10 = "icd10.json"
         //Aqua.io credentials
         static let AQUA_ID = "2af78a71823fb87776835056165bae8939a3b8d6017844cabe0c66aad47557dd"
         static let AQUA_SECRET = "cd1f147bca1c2f622c0ee53043ff09e315c20d1d32e03d184b2c18a932bbc213"
+        //Ziptastic API constants
+        static let ZIP_BASE_URL = "http://ziptasticapi.com/"
         //The max number of Diagnoses allowed
         static let diagnoses = 2
         static let PTVisits = 4.0
         static let minPTVisits = 1.0
         static let maxPTVisits = 20.0
+        static let PTMessage = "Physical Therapy Prescription for "
     }//Constants
     
     //Token

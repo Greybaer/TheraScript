@@ -19,6 +19,7 @@ class TSClient: NSObject{
     //The Aqua.io token
     var aqua = Aqua()
     
+    
     //***************************************************
     //The prescription components
     //***************************************************
@@ -31,6 +32,9 @@ class TSClient: NSObject{
     
     //Therapy practice info
     var therapy = Therapy()
+    
+    //Core Data PT Practice info
+    var practices = [PTPractice]()
     
     //Therapy Prescription
     var prescription = Prescription()
@@ -82,7 +86,7 @@ class TSClient: NSObject{
     func getAquaToken(completionHandler: (success: Bool, errorString: String?) -> Void){
         
         //Create the request
-        let request = NSMutableURLRequest(URL: NSURL(string: TSClient.Constants.TOKEN_URL)!)
+        let request = NSMutableURLRequest(URL: NSURL(string: TSClient.Constants.AQUA_TOKEN_URL)!)
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPMethod = "POST"
@@ -132,7 +136,7 @@ class TSClient: NSObject{
         
         //Build a session request
         let session = NSURLSession.sharedSession()
-        let urlString = TSClient.Constants.BASE_URL + codeSearch + escapedParameters(search as [String : AnyObject])
+        let urlString = TSClient.Constants.AQUA_BASE_URL + codeSearch + escapedParameters(search as [String : AnyObject])
         let url = NSURL(string: urlString)!
         let request = NSURLRequest(URL: url)
         println(request)
@@ -182,8 +186,6 @@ class TSClient: NSObject{
     //***************************************************
     // Helper Functions
     //***************************************************
-    
-    //TODO: Extend this into a function to clear the entire prescription data list!
     //***************************************************
     // rxClear - Clear the Prescription page, resetting it to the default state
     func rxClear(){
@@ -196,9 +198,8 @@ class TSClient: NSObject{
         
         //Prescriotion Info
         self.prescription = Prescription()
-        
-        //Transmittal Info
-    }
+    }//rxClear
+    
     //***************************************************
     // Create an icon of arbitrary size from a passed image
     //This code works! Save it for later when we need to resize for the PDF
@@ -217,7 +218,7 @@ class TSClient: NSObject{
         UIGraphicsEndImageContext()
         //and return the icon
         return icon
-    }
+    }//createIcon
 
     //***************************************************
     // Save Provider info
@@ -266,7 +267,7 @@ class TSClient: NSObject{
         return provider
     }//getProviderInfo
     
-    //***************************************************
+   //***************************************************
     // Given a dictionary of parameters,
     // convert to a string for a url
     // GB - Lifted from the original class app example
@@ -317,7 +318,29 @@ class TSClient: NSObject{
         var alert = UIAlertController(title: "Save Therapist", message: "Save this therapy practice to favorites?", preferredStyle: UIAlertControllerStyle.Alert)
         //Add the actions
         alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
-            println("Handle Ok logic here")
+            //println("Handle Ok logic here")
+            
+            //Core Data save of PT practice info
+            //TODO: Ensure that duplicates are not saved
+            
+            //Create a dictionary
+            let dictionary: [String : AnyObject] = [
+                PTPractice.Keys.Name : self.therapy.practiceName as String,
+                PTPractice.Keys.Address : self.therapy.practiceAddress as String,
+                PTPractice.Keys.Phone : self.therapy.practicePhone as String
+            ]//dictionary
+            
+            //And a new object to hold the data
+            let newPractice = PTPractice(dictionary: dictionary, context: self.sharedContext)
+            
+            //And save it
+            dispatch_async(dispatch_get_main_queue()) {
+                CoreDataStackManager.sharedInstance().saveContext()
+            }
+
+            //Append the the array so it shows up immediately
+            self.practices.append(newPractice)
+            
             //We have to close from here as the handler controls the flow
             viewController.navigationController?.popToRootViewControllerAnimated(true)
        }))
@@ -371,5 +394,6 @@ class TSClient: NSObject{
         let keyboardSize=userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
         //println("Keyboard Height: \(keyboardSize.CGRectValue().height)")
         return keyboardSize.CGRectValue().height
-    }
+    }//getKeyboardHeight
+    
 }//class

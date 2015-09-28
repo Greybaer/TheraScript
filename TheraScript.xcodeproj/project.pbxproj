@@ -18,6 +18,7 @@
 		A88E56381B5FDB9400170159 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88E56371B5FDB9400170159 /* CoreDataStack.swift */; };
 		A88E563A1B5FDBCB00170159 /* TSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88E56391B5FDBCB00170159 /* TSData.swift */; };
 		A8AF79E71B78E9E6004A1619 /* TherapyRxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AF79E61B78E9E6004A1619 /* TherapyRxViewController.swift */; };
+		A8B4AE8E1BB42B000049EA0D /* PTPractice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B4AE8D1BB42B000049EA0D /* PTPractice.swift */; };
 		A8B561121B752615008B9B1C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8B561111B752615008B9B1C /* Images.xcassets */; };
 		A8DA46901B559D8900FFC950 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DA468F1B559D8900FFC950 /* AppDelegate.swift */; };
 		A8DA46931B559D8900FFC950 /* TheraScript.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A8DA46911B559D8900FFC950 /* TheraScript.xcdatamodeld */; };
@@ -51,6 +52,7 @@
 		A88E56371B5FDB9400170159 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		A88E56391B5FDBCB00170159 /* TSData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSData.swift; sourceTree = "<group>"; };
 		A8AF79E61B78E9E6004A1619 /* TherapyRxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TherapyRxViewController.swift; sourceTree = "<group>"; };
+		A8B4AE8D1BB42B000049EA0D /* PTPractice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTPractice.swift; sourceTree = "<group>"; };
 		A8B561111B752615008B9B1C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TheraScript.xcodeproj/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		A8DA468A1B559D8900FFC950 /* TheraScript.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheraScript.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8DA468E1B559D8900FFC950 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				A8E800641B94FE9200C0E5A1 /* ManualPTViewController.swift */,
 				A874DFD61B960D9700C16A6C /* PTFavoritesViewController.swift */,
 				A883FCC81B8B7580002D273A /* PTMapViewController.swift */,
+				A8B4AE8D1BB42B000049EA0D /* PTPractice.swift */,
 				A8719FB01B61418B00913FCD /* RxViewController.swift */,
 				A8AF79E61B78E9E6004A1619 /* TherapyRxViewController.swift */,
 				A88E56351B5FD9C600170159 /* TSClient.swift */,
@@ -270,6 +273,7 @@
 				A8719FB11B61418B00913FCD /* RxViewController.swift in Sources */,
 				A81A26461B680C35004B6F25 /* ImageCache.swift in Sources */,
 				A8DA46901B559D8900FFC950 /* AppDelegate.swift in Sources */,
+				A8B4AE8E1BB42B000049EA0D /* PTPractice.swift in Sources */,
 				A8DA46931B559D8900FFC950 /* TheraScript.xcdatamodeld in Sources */,
 				A84526991B837CDB00515D70 /* DiagnosisViewController.swift in Sources */,
 				A88E56381B5FDB9400170159 /* CoreDataStack.swift in Sources */,

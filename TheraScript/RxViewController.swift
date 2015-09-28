@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewDelegate {
 
@@ -21,6 +22,12 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
     
     //Keyboard up?
     var kbUp = false
+    
+    //Shorthand for the CoreData context
+    var sharedContext: NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().managedObjectContext!
+    }
+
 
     //Outlets
     
@@ -68,6 +75,8 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
         ptZip.delegate = self
         ptPhone.delegate = self
         
+        //Load favorites if saved on disk
+        loadFavorites()
     }//viewDidLoad
 
     override func viewWillAppear(animated: Bool) {
@@ -294,6 +303,12 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
     // Generate the prescription
     @IBAction func generateRx(sender: UIBarButtonItem) {
         println("Generate button pressed")
+        //Make sure the info is available when we need it
+        TSClient.sharedInstance().patient.Name = ptName.text
+        TSClient.sharedInstance().patient.Address = ptAddress.text
+        TSClient.sharedInstance().patient.Zip = ptZip.text
+        TSClient.sharedInstance().patient.Phone = ptPhone.text
+        
         let controller = self.storyboard?.instantiateViewControllerWithIdentifier("GeneratorViewController") as! GeneratorViewController
         controller.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
         self.navigationController?.pushViewController(controller, animated: true)
@@ -315,6 +330,8 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
             self.ptAddress.text = ""
             self.ptZip.text = ""
             self.ptPhone.text = ""
+            //Reset the diagnosis list
+            self.diagnosis.text = ""
             //Reset the prescription data
             self.ptDiagnosis.detailTextLabel?.text = "None Selected"
             self.therapyLocation.detailTextLabel?.text = "None Selected"
@@ -359,5 +376,25 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
         }
     }//checkPatientData
 
-    
+    func loadFavorites(){
+        //error object if fetch fails
+        let error: NSErrorPointer = nil
+        
+        //build the fetchRequest
+        let fetchRequest = NSFetchRequest(entityName: "PTPractice")
+        //If there are results create pins. If not move on
+        if let results = sharedContext.executeFetchRequest(fetchRequest, error: error) {
+            if error != nil{
+                //Nice alertview
+                TSClient.sharedInstance().errorDialog(self, errTitle: "Favorites Load Error", action: "OK", errMsg: "Error loading favorites from disk")
+            }else{
+                TSClient.sharedInstance().practices = results as! [PTPractice]
+                for practice in TSClient.sharedInstance().practices{
+                    println("\(practice.name)\n")
+                }
+            }//if/else
+        }//if let
+    }//loadFavorites
+        
+
 }//class

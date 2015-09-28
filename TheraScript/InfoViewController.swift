@@ -24,7 +24,7 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var stateName: UITextField!
     @IBOutlet weak var zipCode: UITextField!
     
-    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var nextButton: UIBarButtonItem!
 
     //Variables
     //Struct holding the provider date we're inputting
@@ -50,6 +50,7 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
         cityName.delegate = self
         stateName.delegate = self
         zipCode.delegate = self //zipTextDelegate
+        self.navigationController?.toolbarHidden = true
     }//viewDidLoad
     
     override func viewWillAppear(animated: Bool) {
@@ -146,8 +147,7 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
             zipCode.becomeFirstResponder()
         case zipCode:
             zipCode.resignFirstResponder()
-            //Maybe call the next button action instead?
-            nextButton.becomeFirstResponder()
+            firstName.becomeFirstResponder()
         default:
             firstName.becomeFirstResponder()
         }//switch

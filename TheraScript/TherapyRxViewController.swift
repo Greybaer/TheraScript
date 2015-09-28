@@ -190,17 +190,7 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
         }else{
             backSchool.accessoryType = UITableViewCellAccessoryType.None
         }
-        if TSClient.sharedInstance().prescription.lso{
-            lso.accessoryType = UITableViewCellAccessoryType.Checkmark
-        }else{
-            lso.accessoryType = UITableViewCellAccessoryType.None
-        }
-        if TSClient.sharedInstance().prescription.cHardCollar{
-            cSoftCollar.accessoryType = UITableViewCellAccessoryType.Checkmark
-        }else{
-            cSoftCollar.accessoryType = UITableViewCellAccessoryType.None
-        }
-        if TSClient.sharedInstance().prescription.cSoftCollar{
+       if TSClient.sharedInstance().prescription.cSoftCollar{
             cHardCollar.accessoryType = UITableViewCellAccessoryType.Checkmark
         }else{
             cHardCollar.accessoryType = UITableViewCellAccessoryType.None
@@ -215,6 +205,17 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
         }else{
             ctlso.accessoryType = UITableViewCellAccessoryType.None
         }
+        
+        if TSClient.sharedInstance().prescription.lso{
+            lso.accessoryType = UITableViewCellAccessoryType.Checkmark
+        }else{
+            lso.accessoryType = UITableViewCellAccessoryType.None
+        }
+        if TSClient.sharedInstance().prescription.cHardCollar{
+            cSoftCollar.accessoryType = UITableViewCellAccessoryType.Checkmark
+        }else{
+            cSoftCollar.accessoryType = UITableViewCellAccessoryType.None
+        }
         if TSClient.sharedInstance().prescription.tns{
             tns.accessoryType = UITableViewCellAccessoryType.Checkmark
         }else{
@@ -224,6 +225,9 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
     
     //Save the Prescription Data
     func setRxInfo(){
+        //First, zero out the data
+        TSClient.sharedInstance().prescription = TSClient.Prescription()
+        
         //The user wants to save the data here, so set the flag to alert the RxViewController
         TSClient.sharedInstance().prescription.rxSelected = true
         
@@ -284,30 +288,29 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
         }else{
             TSClient.sharedInstance().prescription.cSoftCollar = false
         }
-
         if tlso.accessoryType == UITableViewCellAccessoryType.Checkmark{
             TSClient.sharedInstance().prescription.tlso = true
         }else{
             TSClient.sharedInstance().prescription.tlso = false
         }
-
+        if ctlso.accessoryType == UITableViewCellAccessoryType.Checkmark{
+            TSClient.sharedInstance().prescription.ctlso = true
+        }else{
+            TSClient.sharedInstance().prescription.ctlso = false
+        }
+        if lso.accessoryType == UITableViewCellAccessoryType.Checkmark{
+            TSClient.sharedInstance().prescription.lso = true
+        }else{
+            TSClient.sharedInstance().prescription.tlso = false
+        }
         if cHardCollar.accessoryType == UITableViewCellAccessoryType.Checkmark{
             TSClient.sharedInstance().prescription.cHardCollar = true
         }else{
             TSClient.sharedInstance().prescription.cHardCollar = false
         }
 
-        if tlso.accessoryType == UITableViewCellAccessoryType.Checkmark{
-            TSClient.sharedInstance().prescription.tlso = true
-        }else{
-            TSClient.sharedInstance().prescription.tlso = false
-        }
 
-        if ctlso.accessoryType == UITableViewCellAccessoryType.Checkmark{
-            TSClient.sharedInstance().prescription.ctlso = true
-        }else{
-            TSClient.sharedInstance().prescription.ctlso = false
-        }
+ 
 
         if tns.accessoryType == UITableViewCellAccessoryType.Checkmark{
             TSClient.sharedInstance().prescription.tns = true
