@@ -86,31 +86,16 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         
         //And the image
         icon = TSClient.Cache.imageCache.imageWithIdentifier(TSClient.Constants.userLogo)
-        
-        //Hide all the checkmarks - not needed - delete before submission
-        /*
-        modalities.hidden = true
-        conditioning.hidden = true
-        coreStab.hidden = true
-        manualTherapy.hidden = true
-        pool.hidden = true
-        neckSchool.hidden = true
-        backSchool.hidden = true
-        LSO.hidden = true
-        TLSO.hidden = true
-        CTLSO.hidden = true
-        TNS.hidden = true
-        cSoftCollar.hidden = true
-        cHardCollar.hidden = true
-        */
-        
-        //We *should* always have info to get here, but just in case...
+
+        //We *should* always have provider info to get here, but just in case...
         //Empty field = no info
         if provider.firstName.isEmpty{
             //Pop an error dialog
             TSClient.sharedInstance().errorDialog(self, errTitle: "No Provider", action: "OK", errMsg: "Please set up provider information")
             //and return to the base screen
             self.navigationController?.popToRootViewControllerAnimated(true)
+            
+            //The user can elect to look at an empty prescription, so continue
         }else{
             //Populate the provider header
             iconImage.image = TSClient.sharedInstance().createIcon(icon!, size: iconSize)
@@ -128,7 +113,7 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
             PTPractice.text = TSClient.sharedInstance().therapy.practiceName
             PTAddress.text = TSClient.sharedInstance().therapy.practiceAddress
             PTPhone.text = TSClient.sharedInstance().therapy.practicePhone
-            println("|\(PTPhone.text)|")
+            //println("|\(PTPhone.text)|")
             
             //Populate the diagnosis list
             for diagnosis in TSClient.sharedInstance().dxList{

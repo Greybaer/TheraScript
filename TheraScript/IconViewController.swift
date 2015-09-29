@@ -102,6 +102,8 @@ class IconViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         self.presentViewController(pickController, animated: true, completion: nil)
     }//imageFromPhotos
     
+    //***************************************************
+    // set the icon to the default ISI logo
     @IBAction func setDefaultIcon(sender: AnyObject) {
         //The user wants to use the default ISI logo
         self.imageView.image = UIImage(named: TSClient.Constants.isiLogo)

@@ -54,6 +54,9 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         dispatch_async(dispatch_get_main_queue()){
+            //Textfield resigns focus to hide the keyboard
+            self.searchTerm.resignFirstResponder()
+            
             //Start the spinner
             self.spinner.startAnimating()
         }//main queue
@@ -66,7 +69,7 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
             if !success{
                 TSClient.sharedInstance().errorDialog(self, errTitle: "Connection Error", action: "OK", errMsg: errorString!)
             }else{
-                println("Token: \(TSClient.sharedInstance().aqua.token)")
+                //println("Token: \(TSClient.sharedInstance().aqua.token)")
                 var token = TSClient.sharedInstance().aqua.token                //Do a search using the textfield entry using the token
                 TSClient.sharedInstance().getDx(codeType, searchTerm: textField.text, token: token){(success,errorString) in
                     if !success{
@@ -75,7 +78,7 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
                         }//queue
                     }else{
                         //populate the table
-                        println("Cells to display: \(TSClient.sharedInstance().aqua.searchResults.count)")
+                        //println("Cells to display: \(TSClient.sharedInstance().aqua.searchResults.count)")
                         dispatch_async(dispatch_get_main_queue()){
                             self.DxTableView.reloadData()
                         }
@@ -132,17 +135,6 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         
         //Get the list of selections to this point
         var selected = tableView.indexPathsForSelectedRows()
-        //Let's see if the selected cells still works...it does with the tweak
-        // Keep this for now as an example for the Accept method
-        if selected != nil{
-            println("Number of selected cells: \(selected!.count)")
-            //var path = (selected as! [NSIndexPath])[0]
-            //var selCell = tableView.cellForRowAtIndexPath(path)
-            //Works, but still optional
-            //println("Diagnosis: \(cell?.textLabel!.text)")
-        }else{
-            println("No rows selected")
-        }
     }//didSelectRow
 
 
@@ -153,20 +145,14 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         //Remove the check
         cell!.accessoryType = UITableViewCellAccessoryType.None
         var selected = tableView.indexPathsForSelectedRows()
-        //Let's see if the selected cells still works...it does with the tweak
-        // Keep this for now as an example for the Accept method
-        if selected != nil{
-            println("Number of selected cells: \(selected!.count)")
-       }else{
-            println("No rows selected")
-        }
-        
     }//didDeselect
     
     //***************************************************
     //Action functions
     //***************************************************
-    
+
+    //***************************************************
+    // saveDx - save the diagnosis list
     func saveDx() {
         //println("Accept pressed")
         //Let's zero out the stored date as the user may have come back to change things. Pressing Accept means a do-over.

@@ -12,6 +12,9 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
 
     //Variables
     
+    //Keyboard up?
+    var kbUp = false
+
 
     
     //Outlets
@@ -44,11 +47,50 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
         
         //Hide the toolbar here
         self.navigationController?.toolbarHidden = true
+        
+        // Sign up for Keyboard notifications
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        //KB Hide Notification
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillDisappear:", name: UIKeyboardWillHideNotification,
+            object: nil)
+        
     }//viewWillAppear
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        //Remove us from keyboard notifications
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillShow:", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillDisappear:", object: nil)
+    }//viewWillDisappear
+
     
     //***************************************************
     // Delegate Functions
     //***************************************************
+    
+    //Slide the picture up to show bottom textfields when the keyboard slides in
+    func keyboardWillShow(notification: NSNotification){
+        //Getting multiple notifications, so we'll add a test to make sure we only respond to the first one
+        if (PTCity.editing || PTState.editing || PTZip.editing || PTPhone.editing ) && !kbUp{
+            self.view.frame.origin.y -= TSClient.sharedInstance().getKeyboardHeight(notification)
+            //Set the flag to block additional notifications for this session
+            kbUp = true
+            //println("Sliding Frame up: \(self.view.frame.origin.y)")
+        }//if
+    }//keyboardWillShow
+    
+    //...and slide it back down when the view requires
+    func keyboardWillDisappear(notification: NSNotification){
+        if PTPhone.isFirstResponder() && kbUp{
+                //just reset the origin to zero since we're getting multiple notifications
+                self.view.frame.origin.y = 0
+                //reset the flag
+                kbUp = false
+                //println("Sliding Frame down: \(self.view.frame.origin.y)")
+        }
+    }//keyboardWillDisappear
+
 
     //***************************************************
     // Handle returns by shifting focus
@@ -196,8 +238,18 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
             TSClient.sharedInstance().therapy.practiceName = PTPractice.text
             TSClient.sharedInstance().therapy.practiceAddress = "\(PTAddress.text) \(PTCity.text) \(PTState.text) \(PTZip.text)"
             TSClient.sharedInstance().therapy.practicePhone = PTPhone.text
-            //Ask to save info in favorites
-            TSClient.sharedInstance().confirmationDialog(self)
+
+            //Is this entry already saved to favoirites?
+            var duplicate = TSClient.sharedInstance().checkDuplicate()
+            
+            if !duplicate{
+                //Show a dialog to allow the user to save this practice to favorites if desired
+                TSClient.sharedInstance().confirmationDialog(self)
+            }else{
+                //Just return to Rx View
+                self.navigationController?.popToRootViewControllerAnimated(true)
+            }
+            
         }//if/else
     }//savePTInfo
     

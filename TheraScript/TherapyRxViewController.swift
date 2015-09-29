@@ -121,6 +121,7 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
     //***************************************************
     // Action Functions
     //***************************************************
+    
     //***************************************************
     // incrementVisits - Change the number of PT visits prescribed - defaults to 4
     @IBAction func incrementVisits(sender: UIStepper) {
@@ -223,7 +224,8 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
         }
     }//getRxInfo
     
-    //Save the Prescription Data
+    //***************************************************
+    // Populate the Prescription Data
     func setRxInfo(){
         //First, zero out the data
         TSClient.sharedInstance().prescription = TSClient.Prescription()
@@ -308,10 +310,6 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
         }else{
             TSClient.sharedInstance().prescription.cHardCollar = false
         }
-
-
- 
-
         if tns.accessoryType == UITableViewCellAccessoryType.Checkmark{
             TSClient.sharedInstance().prescription.tns = true
         }else{

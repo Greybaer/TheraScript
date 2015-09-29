@@ -90,7 +90,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
     }//viewForAnnotation
     
     func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
-        println("User selected \(view.annotation.title!)")
+        //println("User selected \(view.annotation.title!)")
 
         //Split the subtitle string into address and phone
         var splitString: String = view.annotation.subtitle!
@@ -101,8 +101,16 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
         TSClient.sharedInstance().therapy.practiceAddress = splitArray[0]
         TSClient.sharedInstance().therapy.practicePhone = splitArray[1]
 
-        //Show a dialog to allow the user to save this practice to favorites if desired
-        TSClient.sharedInstance().confirmationDialog(self)
+        //Is this entry already saved to favoirites?
+        var duplicate = TSClient.sharedInstance().checkDuplicate()
+        
+        if !duplicate{
+            //Show a dialog to allow the user to save this practice to favorites if desired
+            TSClient.sharedInstance().confirmationDialog(self)
+        }else{
+            //Just return to Rx View
+            self.navigationController?.popToRootViewControllerAnimated(true)
+        }
     }//callout selected
     
     func mapViewDidFinishRenderingMap(mapView: MKMapView!, fullyRendered: Bool) {
@@ -173,20 +181,20 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
                         TSClient.sharedInstance().errorDialog(self, errTitle: "Therapy Search Error", action: "OK", errMsg: error.localizedDescription)
                     }//main_queue
                 }else{
-                    println(response.mapItems)
-                        for item in response.mapItems as! [MKMapItem]{
-                            var pin = MKPointAnnotation()
-                            pin.coordinate = item.placemark.coordinate
-                            //Massage the phonenumber into the right format
-                            var phone = self.formatPhone(item.phoneNumber)
-                            //Title will be practice name and phone so we can split it later
-                            pin.title = (item.name)
-                          
-                            //Build the address manually.
-                            var address = "\(item.placemark.subThoroughfare) \(item.placemark.thoroughfare) \(item.placemark.locality), \(item.placemark.administrativeArea) \(item.placemark.postalCode)"
-                           pin.subtitle = "\(address) ∙ \(phone)"
-                            self.annotations.append(pin)
-                        }//for   
+                    //println(response.mapItems)
+                    for item in response.mapItems as! [MKMapItem]{
+                        var pin = MKPointAnnotation()
+                        pin.coordinate = item.placemark.coordinate
+                        //Massage the phonenumber into the right format
+                        var phone = self.formatPhone(item.phoneNumber)
+                        //Title will be practice name and phone so we can split it later
+                        pin.title = (item.name)
+                        
+                        //Build the address manually.
+                        var address = "\(item.placemark.subThoroughfare) \(item.placemark.thoroughfare) \(item.placemark.locality), \(item.placemark.administrativeArea) \(item.placemark.postalCode)"
+                        pin.subtitle = "\(address) ∙ \(phone)"
+                        self.annotations.append(pin)
+                    }//for
                     dispatch_async(dispatch_get_main_queue()){
                         self.PTMapView.addAnnotations(self.annotations)
                         self.spinner.stopAnimating()

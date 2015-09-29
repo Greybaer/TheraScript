@@ -43,7 +43,7 @@ extension TSClient{
         var searchResults: NSArray = []
     }//aqua
     
-    //The provider information dictionary structure for the NSArchiver Dictionary
+    //The provider information dictionary structure for the NSKeyedArchiver Dictionary
     struct ProviderInfo{
         static let firstName = "firstName"
         static let middleName = "middleName"
@@ -59,7 +59,7 @@ extension TSClient{
         static let fileName = "providerinfo"
     }//provder info
     
-    //Provider data
+    //Provider data for use with dictionary
     struct Provider{
         var firstName: String = ""
         var middleName: String = ""

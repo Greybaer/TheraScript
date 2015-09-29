@@ -216,6 +216,11 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
                 return false
 
             case zipCode:
+                //Empty string? return it (backspace)
+                if string.isEmpty{
+                    return true
+                }
+                
                 //Is the new input a number? If not, disallow it
                 let isnum = string.toInt()
             

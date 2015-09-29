@@ -38,12 +38,9 @@ class TSClient: NSObject{
     
     //Therapy Prescription
     var prescription = Prescription()
-    //***************************************************
-    
-    
+
     //The URL Session
     var session: NSURLSession
-
 
     //Shorthand for the CoreData context
     var sharedContext: NSManagedObjectContext {
@@ -62,6 +59,7 @@ class TSClient: NSObject{
     }//init
 
 
+    //***************************************************
     //Shared Instance
     class func sharedInstance() -> TSClient {
     
@@ -72,6 +70,7 @@ class TSClient: NSObject{
         return Singleton.sharedInstance
     }//sharedInstance
 
+    //***************************************************
     //Shared Image Cache
     struct Cache {
         static let imageCache = ImageCache()
@@ -101,7 +100,7 @@ class TSClient: NSObject{
                     if parseError != nil{
                         completionHandler(success: false, errorString: parseError?.localizedDescription)
                     }else{
-                        println(JSONData)
+                        //println(JSONData)
                         TSClient.sharedInstance().aqua.token = (JSONData["access_token"] as! String)
                         completionHandler(success: true, errorString: nil)
                     }
@@ -139,7 +138,7 @@ class TSClient: NSObject{
         let urlString = TSClient.Constants.AQUA_BASE_URL + codeSearch + escapedParameters(search as [String : AnyObject])
         let url = NSURL(string: urlString)!
         let request = NSURLRequest(URL: url)
-        println(request)
+        //println(request)
         
         //Now make the request and parse the results
         let task = session.dataTaskWithRequest(request) {data, response, downloadError in
@@ -152,7 +151,7 @@ class TSClient: NSObject{
                 var parsingError: NSError? = nil
                 //The data comes as an array of NSDictionaries
                 let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! NSArray
-                println(parsedResult)
+                //println(parsedResult)
                 //Check for an empty return set
                 if parsedResult.count < 1{
                     completionhandler(success: false, error: "No results found")
@@ -186,6 +185,7 @@ class TSClient: NSObject{
     //***************************************************
     // Helper Functions
     //***************************************************
+
     //***************************************************
     // rxClear - Clear the Prescription page, resetting it to the default state
     func rxClear(){
@@ -223,7 +223,7 @@ class TSClient: NSObject{
     //***************************************************
     // Save Provider info
     func saveProviderInfo(info: Provider){
-        println("entered saveProvider")
+        //println("entered saveProvider")
         //Create a dictionary
         let providerDictionary = [
             ProviderInfo.firstName : info.firstName,
@@ -309,29 +309,77 @@ class TSClient: NSObject{
         }
     }
 
+    func checkDuplicate() -> Bool {
+       
+        //Build predicates for name and address so we can look for them
+        let predicate1 = NSPredicate(format: "name = %@", self.therapy.practiceName)
+        let predicate2 = NSPredicate(format: "address = %@", self.therapy.practiceAddress)
+        
+        //Now perform a fetch, looking for results that match
+        let request = NSFetchRequest(entityName: "PTPractice")
+        request.returnsObjectsAsFaults = false
+        
+        //Form the predicate search term
+        request.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
+        
+        let result: NSArray = sharedContext.executeFetchRequest(request, error: nil)!
+        
+        //If we get a result, just close and continue
+        if result.count != 0{
+            //Let's look at them to check...
+            var practices = result as! [PTPractice]
+            //viewController.navigationController?.popToRootViewControllerAnimated(true)
+            return true
+        }else{
+            return false
+        }
+   }//checkDuplicates
+    
     //***************************************************
     // Create an AlertView to allow user to save to favorites if desired
     func confirmationDialog(viewController: UIViewController) -> Void{
         //Make sure the data actually got to the right place...
-        println("Therapy Info: \(therapy.practiceName) \(therapy.practiceAddress) \(therapy.practicePhone)")
+        //println("Therapy Info: \(therapy.practiceName) \(therapy.practiceAddress) \(therapy.practicePhone)")
+
+        //Before we present, we check for an existing entry. If present, we go away without presenting the dialog
+        //Create a dictionary of the new data
+        let dictionary: [String : AnyObject] = [
+            PTPractice.Keys.Name : self.therapy.practiceName as String,
+            PTPractice.Keys.Address : self.therapy.practiceAddress as String,
+            PTPractice.Keys.Phone : self.therapy.practicePhone as String
+        ]//dictionary
+
+        //And a new object to hold the data
+        let newPractice = PTPractice(dictionary: dictionary, context: self.sharedContext)
+ /*
+        //Build predicates for name and address so we can look for them
+        let predicate1 = NSPredicate(format: "name = %@", self.therapy.practiceName)
+        let predicate2 = NSPredicate(format: "address = %@", self.therapy.practiceAddress)
+        
+        //Now perform a fetch, looking for results that match
+        let request = NSFetchRequest(entityName: "PTPractice")
+        request.returnsObjectsAsFaults = false
+        
+        //Form the predicate search term
+        request.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
+        
+        var result: NSArray = sharedContext.executeFetchRequest(request, error: nil)!
+        
+        //If we get a result, just close and continue
+        if result.count != 0{
+            //Let's look at them to check...
+            var practices = result as! [PTPractice]
+            viewController.navigationController?.popToRootViewControllerAnimated(true)
+            return
+        }
+        
+        //No match, pop the dialog to allow the user to save to favorites
+*/
         //Create the basic alertcontroller
         var alert = UIAlertController(title: "Save Therapist", message: "Save this therapy practice to favorites?", preferredStyle: UIAlertControllerStyle.Alert)
         //Add the actions
         alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
             //println("Handle Ok logic here")
-            
-            //Core Data save of PT practice info
-            //TODO: Ensure that duplicates are not saved
-            
-            //Create a dictionary
-            let dictionary: [String : AnyObject] = [
-                PTPractice.Keys.Name : self.therapy.practiceName as String,
-                PTPractice.Keys.Address : self.therapy.practiceAddress as String,
-                PTPractice.Keys.Phone : self.therapy.practicePhone as String
-            ]//dictionary
-            
-            //And a new object to hold the data
-            let newPractice = PTPractice(dictionary: dictionary, context: self.sharedContext)
             
             //And save it
             dispatch_async(dispatch_get_main_queue()) {

@@ -110,10 +110,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
         therapyLocation.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         therapyRx.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         //deliveryMethod.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-        
-        //TODO: Get values returned from all the cell actions to populate the selected prescriptions parts
-        //TODO - Probably need a way to clear a prescription too.
-        
+               
         //Check the diagnosis list and display them if present
         if TSClient.sharedInstance().dxList.count > 0{
             var dxText: String = ""
@@ -302,7 +299,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
     //***************************************************
     // Generate the prescription
     @IBAction func generateRx(sender: UIBarButtonItem) {
-        println("Generate button pressed")
+        //println("Generate button pressed")
         //Make sure the info is available when we need it
         TSClient.sharedInstance().patient.Name = ptName.text
         TSClient.sharedInstance().patient.Address = ptAddress.text
@@ -315,6 +312,8 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
         
     }
 
+    //***************************************************
+    // Clear the Prescription information, setting it back to blank
     @IBAction func clearRx(sender: UIBarButtonItem) {
         //This needs to all be done from here to properly clear the fields
         
@@ -332,6 +331,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
             self.ptPhone.text = ""
             //Reset the diagnosis list
             self.diagnosis.text = ""
+            TSClient.sharedInstance().dxList = []
             //Reset the prescription data
             self.ptDiagnosis.detailTextLabel?.text = "None Selected"
             self.therapyLocation.detailTextLabel?.text = "None Selected"
@@ -382,7 +382,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
         
         //build the fetchRequest
         let fetchRequest = NSFetchRequest(entityName: "PTPractice")
-        //If there are results create pins. If not move on
+        //If there are results, grab them. If not move on
         if let results = sharedContext.executeFetchRequest(fetchRequest, error: error) {
             if error != nil{
                 //Nice alertview
@@ -390,7 +390,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
             }else{
                 TSClient.sharedInstance().practices = results as! [PTPractice]
                 for practice in TSClient.sharedInstance().practices{
-                    println("\(practice.name)\n")
+                    //println("\(practice.name)\n")
                 }
             }//if/else
         }//if let

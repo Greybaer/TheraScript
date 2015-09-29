@@ -14,13 +14,17 @@ class PTFavoritesViewController: UIViewController, UITableViewDataSource, UITabl
     //Outlets
     @IBOutlet weak var favoritesTable: UITableView!
     
-    
+    //Shorthand for the CoreData context
+    var sharedContext: NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().managedObjectContext!
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         //Add a completion button to the nav bar
         //Has to be done here because tabs don't reload on navigation between views
         
-        var editButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.Plain, target: self, action: "editFavorites")
+        var editButton = UIBarButtonItem(title: "Remove", style: UIBarButtonItemStyle.Plain, target: self, action: "editFavorites")
         self.tabBarController!.navigationItem.rightBarButtonItem = editButton
         
         //Set the title of the view
@@ -44,6 +48,7 @@ class PTFavoritesViewController: UIViewController, UITableViewDataSource, UITabl
     //***************************************************
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //println("Table Rows: \(TSClient.sharedInstance().practices.count)")
         return TSClient.sharedInstance().practices.count
     }//numberOfRows
     
@@ -59,7 +64,7 @@ class PTFavoritesViewController: UIViewController, UITableViewDataSource, UITabl
     }//cellForRow
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("Selected cell")
+        //println("Selected cell")
         
         //Get the practice info for the row chosen
         var practice = TSClient.sharedInstance().practices[indexPath.row]
@@ -73,22 +78,43 @@ class PTFavoritesViewController: UIViewController, UITableViewDataSource, UITabl
         self.navigationController?.popToRootViewControllerAnimated(true)
     }//didSelect
     
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        //In delete mode?
+        if editingStyle == UITableViewCellEditingStyle.Delete{
+            //println("Before removal: \(TSClient.sharedInstance().practices)")
+            //Remove it from CoreData
+            sharedContext.deleteObject(TSClient.sharedInstance().practices[indexPath.row])
+            //Remove from the local array
+            TSClient.sharedInstance().practices.removeAtIndex(indexPath.row)
+            //println("After removal: \(TSClient.sharedInstance().practices)")
+            //Save the context, which should do the trick for CoreData
+            CoreDataStackManager.sharedInstance().saveContext()
+            //Reset the button
+            favoritesTable.setEditing(false, animated: true)
+            self.tabBarController!.navigationItem.rightBarButtonItem?.title = "Remove"
+            //And reload the data
+            tableView.reloadData()
+        }//delete
+    }
     //***************************************************
     // Action Methods
     //***************************************************
 
     //***************************************************
     //editFavorites - Remove entries from favorites
+    //TODO - Implement favorite removal
+    
     func editFavorites(){
             //Check the button to determine what we're doing
-            if self.tabBarController!.navigationItem.rightBarButtonItem?.title == "Edit"{
+            if self.tabBarController!.navigationItem.rightBarButtonItem?.title == "Remove"{
                 //Set editing on
                 favoritesTable.setEditing(true, animated: true)
                 self.tabBarController!.navigationItem.rightBarButtonItem?.title = "Done"
             }else{
                 //Set editing off
                 favoritesTable.setEditing(false, animated: true)
-                self.tabBarController!.navigationItem.rightBarButtonItem?.title = "Edit"
+                self.tabBarController!.navigationItem.rightBarButtonItem?.title = "Remove"
             }
 
     }//editFavorites
