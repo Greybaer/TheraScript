@@ -93,10 +93,10 @@ class TSClient: NSObject{
         //Execute the task
         let task = session.dataTaskWithRequest(request) {data, response, downloadError in
             if downloadError != nil{
-                completionHandler(success: false, errorString: String(stringInterpolationSegment: downloadError.localizedDescription))
+                completionHandler(success: false, errorString: String(stringInterpolationSegment: downloadError!.localizedDescription))
             }else{
                 // Parse the data into readable form
-                TSClient.parseJSONWithCompletionHandler(data) { (JSONData, parseError) in
+                TSClient.parseJSONWithCompletionHandler(data!) { (JSONData, parseError) in
                     if parseError != nil{
                         completionHandler(success: false, errorString: parseError?.localizedDescription)
                     }else{
@@ -150,7 +150,7 @@ class TSClient: NSObject{
                 //Success - save the data in struct for collection display
                 var parsingError: NSError? = nil
                 //The data comes as an array of NSDictionaries
-                let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! NSArray
+                let parsedResult = (try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)) as! NSArray
                 //println(parsedResult)
                 //Check for an empty return set
                 if parsedResult.count < 1{
@@ -171,15 +171,15 @@ class TSClient: NSObject{
     func geocodeAddress(address: String!, completionHandler: (placemark: AnyObject?, error: String?)-> Void) {
         //call the geocoding function
         let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(address, completionHandler: { (placemarks: [AnyObject]!, error: NSError?) in
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
             if error != nil{
                 completionHandler(placemark: nil, error: error!.localizedDescription)
-            }else if placemarks.count > 0{
+            }else if placemarks!.count > 0{
                 //Only want one for this app
-                let placemark = placemarks[0] as! CLPlacemark
+                let placemark = placemarks?[0]
               completionHandler(placemark: placemark, error: nil)
             }//if/else
-        })//completionhandler
+        }//completionhandler
     }//geocodeAddress
     
     //***************************************************
@@ -213,7 +213,7 @@ class TSClient: NSObject{
         //draw the rect
         image.drawInRect(CGRectMake(0.0,0.0, size.width, size.height))
         //and grab the resulting image
-        var icon: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let icon: UIImage = UIGraphicsGetImageFromCurrentImageContext()
         //release the context
         UIGraphicsEndImageContext()
         //and return the icon
@@ -290,7 +290,7 @@ class TSClient: NSObject{
             urlVars += [key + "=" + "\(replaceSpaceValue)"]
         }
         
-        return (!urlVars.isEmpty ? "?" : "") + join("&", urlVars)
+        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
     }//escapedParameters
     
     //***************************************************
@@ -300,7 +300,13 @@ class TSClient: NSObject{
         
         var parsingError: NSError? = nil
         
-        let parsedResult: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError)
+        let parsedResult: AnyObject?
+        do {
+            parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
+        } catch let error as NSError {
+            parsingError = error
+            parsedResult = nil
+        }
         
         if let error = parsingError {
             completionHandler(result: nil, error: error)
@@ -320,9 +326,9 @@ class TSClient: NSObject{
         request.returnsObjectsAsFaults = false
         
         //Form the predicate search term
-        request.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2]) //NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
         
-        let result: NSArray = sharedContext.executeFetchRequest(request, error: nil)!
+        let result: NSArray = try! sharedContext.executeFetchRequest(request)
         
         //If we get a result, just close and continue
         if result.count != 0{
@@ -376,9 +382,9 @@ class TSClient: NSObject{
         //No match, pop the dialog to allow the user to save to favorites
 */
         //Create the basic alertcontroller
-        var alert = UIAlertController(title: "Save Therapist", message: "Save this therapy practice to favorites?", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Save Therapist", message: "Save this therapy practice to favorites?", preferredStyle: UIAlertControllerStyle.Alert)
         //Add the actions
-        alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction) in
             //println("Handle Ok logic here")
             
             //And save it
@@ -405,9 +411,9 @@ class TSClient: NSObject{
     // Create an AlertView to allow user to clear Prescription Data
     func clearDialog(viewController: UIViewController) -> Void{
         //Create the basic alertcontroller
-        var alert = UIAlertController(title: "Clear Prescription?", message: "This will delete all prescription data", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Clear Prescription?", message: "This will delete all prescription data", preferredStyle: UIAlertControllerStyle.Alert)
         //Add the actions
-        alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction) in
             //Clear the Prescription
             self.rxClear()
             //viewController.RxTableView.setNeedsDisplay()

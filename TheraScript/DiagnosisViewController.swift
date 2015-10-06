@@ -31,7 +31,7 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         DxTableView.delegate = self
         
         //Add a completion button to the nav bar
-        var acceptButton = UIBarButtonItem(title: "Accept", style: UIBarButtonItemStyle.Plain, target: self, action: "saveDx")
+        let acceptButton = UIBarButtonItem(title: "Accept", style: UIBarButtonItemStyle.Plain, target: self, action: "saveDx")
         navigationItem.rightBarButtonItem = acceptButton
         //Load the display
         self.DxTableView.reloadData()
@@ -62,7 +62,7 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         }//main queue
 
         //Which ICD code set are we searching?
-        var codeType = self.icdSelector.selectedSegmentIndex
+        let codeType = self.icdSelector.selectedSegmentIndex
         
         //Get a token
         TSClient.sharedInstance().getAquaToken(){(success,errorString) in
@@ -70,8 +70,8 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
                 TSClient.sharedInstance().errorDialog(self, errTitle: "Connection Error", action: "OK", errMsg: errorString!)
             }else{
                 //println("Token: \(TSClient.sharedInstance().aqua.token)")
-                var token = TSClient.sharedInstance().aqua.token                //Do a search using the textfield entry using the token
-                TSClient.sharedInstance().getDx(codeType, searchTerm: textField.text, token: token){(success,errorString) in
+                let token = TSClient.sharedInstance().aqua.token                //Do a search using the textfield entry using the token
+                TSClient.sharedInstance().getDx(codeType, searchTerm: textField.text!, token: token){(success,errorString) in
                     if !success{
                         dispatch_async(dispatch_get_main_queue()){
                         TSClient.sharedInstance().errorDialog(self, errTitle: "Search Result", action: "OK", errMsg: errorString!)
@@ -99,7 +99,7 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
     }//numberOfRows
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("diagnosisCell") as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("diagnosisCell") as UITableViewCell!
         let code = TSClient.sharedInstance().aqua.searchResults[indexPath.row] as! NSDictionary
         cell.textLabel?.text = code["name"] as? String
         cell.detailTextLabel?.text = code["description"] as? String
@@ -113,11 +113,11 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
         
         //How many cells are already selected?
-        var selected = self.DxTableView.indexPathsForSelectedRows()
+        let selected = self.DxTableView.indexPathsForSelectedRows
         //cap at three
         if selected?.count > TSClient.Constants.diagnoses{
             //Let the user know what's up
-            var dxTxt: String = "Diagnosis List is limited to " + String(TSClient.Constants.diagnoses + 1)
+            let dxTxt: String = "Diagnosis List is limited to " + String(TSClient.Constants.diagnoses + 1)
             TSClient.sharedInstance().errorDialog(self, errTitle: "Diagnosis List", action: "OK", errMsg: dxTxt)
             return nil
         }else{
@@ -134,7 +134,7 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
         
         //Get the list of selections to this point
-        var selected = tableView.indexPathsForSelectedRows()
+        _ = tableView.indexPathsForSelectedRows
     }//didSelectRow
 
 
@@ -144,7 +144,7 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
 
         //Remove the check
         cell!.accessoryType = UITableViewCellAccessoryType.None
-        var selected = tableView.indexPathsForSelectedRows()
+        let selected = tableView.indexPathsForSelectedRows
     }//didDeselect
     
     //***************************************************
@@ -158,15 +158,15 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         //Let's zero out the stored date as the user may have come back to change things. Pressing Accept means a do-over.
         TSClient.sharedInstance().dxList = []
         //iterate the selection list and pull the code and description, and save it
-        var paths = DxTableView.indexPathsForSelectedRows()
+        let paths = DxTableView.indexPathsForSelectedRows
         //Check to see somethign was selected to avoid nil crash
         if paths != nil{
             for var i = 0; i < paths!.count; ++i{
-                var path = (paths as! [NSIndexPath])[i]
-                var cell = DxTableView.cellForRowAtIndexPath(path)
-                var code = cell?.textLabel?.text as String!
-                var desc = cell?.detailTextLabel?.text as String!
-                var diagnosis: TSClient.Diagnosis = TSClient.Diagnosis(icdCode: code, description: desc)
+                let path = (paths! as [NSIndexPath!])[i]
+                let cell = DxTableView.cellForRowAtIndexPath(path)
+                let code = cell?.textLabel?.text as String!
+                let desc = cell?.detailTextLabel?.text as String!
+                let diagnosis: TSClient.Diagnosis = TSClient.Diagnosis(icdCode: code, description: desc)
                 TSClient.sharedInstance().dxList.append(diagnosis)
             }//for
         }//if paths

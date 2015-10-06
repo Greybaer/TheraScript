@@ -127,7 +127,7 @@ extension TSClient{
     //Path to the save location of the map region data
     var providerFilePath: String {
         let manager = NSFileManager.defaultManager()
-        let url = manager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first as! NSURL
+        let url = manager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first as NSURL!
         return url.URLByAppendingPathComponent(ProviderInfo.fileName).path!
     }//providerFilePath
     

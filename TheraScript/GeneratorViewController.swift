@@ -68,15 +68,20 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
     
     override func viewWillAppear(animated: Bool) {
         //Add a settings button to the nav bar
-        var settingsButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "sendSMS")
+        let settingsButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "sendSMS")
         self.navigationItem.rightBarButtonItem = settingsButton
         
         //Now, are we text enabled? 
-        var sms = MFMessageComposeViewController.canSendText()
-        var mms = MFMessageComposeViewController.canSendAttachments()
+        let sms = MFMessageComposeViewController.canSendText()
+        //MMS enabled
+        let mms = MFMessageComposeViewController.canSendAttachments()
         
-        if sms || mms == false{
+        //We need at least one to work, so if neither work disable texting
+        if sms == false || mms == false{
             settingsButton.enabled = false
+        }
+        else{
+            settingsButton.enabled = true
         }
         //These are done here because the data may need to change between views
         //rather than loads
@@ -154,20 +159,20 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
  
     //***************************************************
     //The message delegate handler
-    func messageComposeViewController(controller: MFMessageComposeViewController!, didFinishWithResult result: MessageComposeResult) {
-        switch (result.value) {
-        case MessageComposeResultCancelled.value:
+    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
+        switch (result.rawValue) {
+        case MessageComposeResultCancelled.rawValue:
+           TSClient.sharedInstance().errorDialog(controller, errTitle: "Message Cancelled", action: "OK", errMsg: "Message will not be sent")
+            self.dismissViewControllerAnimated(true, completion: nil)
+       case MessageComposeResultFailed.rawValue:
+           TSClient.sharedInstance().errorDialog(controller, errTitle: "Message Send Failed", action: "OK", errMsg: "Message unable to be sent")
+            self.dismissViewControllerAnimated(true, completion: nil)
+        case MessageComposeResultSent.rawValue:
             TSClient.sharedInstance().errorDialog(controller, errTitle: "Message Cancelled", action: "OK", errMsg: "Message will not be sent")
             self.dismissViewControllerAnimated(true, completion: nil)
-        case MessageComposeResultFailed.value:
-            TSClient.sharedInstance().errorDialog(controller, errTitle: "Message Send Failed", action: "OK", errMsg: "Message unable to be sent")
-            self.dismissViewControllerAnimated(true, completion: nil)
-        case MessageComposeResultSent.value:
-            TSClient.sharedInstance().errorDialog(controller, errTitle: "Message Cancelled", action: "OK", errMsg: "Message will not be sent")
-            self.dismissViewControllerAnimated(true, completion: nil)
-        default:
+       default:
             break;
-        }//switch
+       }//switch
     }//MessageControllerDidFinish
     
     //***************************************************
@@ -180,10 +185,10 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         //Adapted from http://www.ioscreator.com/tutorials/send-sms-messages-tutorial-ios8-swift
         
         //create a message controller object
-        var messageVC = MFMessageComposeViewController()
+        let messageVC = MFMessageComposeViewController()
         messageVC.body = TSClient.Constants.PTMessage + TSClient.sharedInstance().patient.Name
         //Create an NSData object from the view
-        var attachment = dataFromView()
+        let attachment = dataFromView()
         //And attach it to the message
         messageVC.addAttachmentData(attachment, typeIdentifier: "images/png", filename: "PTRx.jpg")
         //We default to sending to the therapist and the patient
@@ -215,7 +220,7 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         UIGraphicsEndImageContext()
         
         //Transform the image into NSData
-        var data: NSData = UIImagePNGRepresentation(image)
+        let data: NSData = UIImagePNGRepresentation(image!)!
         
         //Show tool and nav bar
         self.navigationController?.setToolbarHidden(false, animated: false)

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewDelegate {
+class RxViewController: UITableViewController, UITextFieldDelegate {
 
     //Variables
     //Provider data struct
@@ -19,9 +19,6 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
     
     //The icon size
     var iconSize = CGSizeMake(64.0, 64.0)
-    
-    //Keyboard up?
-    var kbUp = false
     
     //Shorthand for the CoreData context
     var sharedContext: NSManagedObjectContext {
@@ -81,7 +78,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
 
     override func viewWillAppear(animated: Bool) {
         //Add a settings button to the nav bar
-        var settingsButton = UIBarButtonItem(image: UIImage(named:"gear"), style: UIBarButtonItemStyle.Plain, target: self, action: "showSettings")
+        let settingsButton = UIBarButtonItem(image: UIImage(named:"gear"), style: UIBarButtonItemStyle.Plain, target: self, action: "showSettings")
         navigationItem.rightBarButtonItem = settingsButton
         
         //Load the provder data as we start up
@@ -152,22 +149,22 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
         
         //Process the required action
         if cell == ptDiagnosis{
-            let controller = self.storyboard?.instantiateViewControllerWithIdentifier("DxViewController") as! UIViewController
+            let controller = self.storyboard?.instantiateViewControllerWithIdentifier("DxViewController") as UIViewController!
             controller.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
             self.navigationController?.pushViewController(controller, animated: true)
             //self.navigationController?.presentViewController(controller, animated: true, completion: nil)
         }else if cell == therapyLocation{
             //For the map to work we need the patient's address and zip,
             //so validate the user info here
-            var ready = checkPatientData()
+            let ready = checkPatientData()
             if !ready {
                 TSClient.sharedInstance().errorDialog(self, errTitle: "Incomplete Patient Information", action: "OK", errMsg: "Please complete patient information before proceeding")
             }else{
                 //Make sure the info is available when we need it
-                TSClient.sharedInstance().patient.Name = ptName.text
-                TSClient.sharedInstance().patient.Address = ptAddress.text
-                TSClient.sharedInstance().patient.Zip = ptZip.text
-                TSClient.sharedInstance().patient.Phone = ptPhone.text
+                TSClient.sharedInstance().patient.Name = ptName.text!
+                TSClient.sharedInstance().patient.Address = ptAddress.text!
+                TSClient.sharedInstance().patient.Zip = ptZip.text!
+                TSClient.sharedInstance().patient.Phone = ptPhone.text!
                 //Launch the view
                 let controller = self.storyboard?.instantiateViewControllerWithIdentifier("PracticeViewController") as! UITabBarController
                 controller.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
@@ -194,7 +191,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
             }
             
             //Is the new input a number? If not, disallow it
-            let isnum = string.toInt()
+            let isnum = Int(string)
             
             if isnum == nil{
                 return false
@@ -202,25 +199,26 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
             
             // Adapted from http://stackoverflow.com/questions/27609104/xcode-swift-formatting-text-as-phone-number
 
-            var newString = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
+            let newString = (textField.text as NSString!).stringByReplacingCharactersInRange(range, withString: string)
             //split the new string into it's character components if there are spaces or hyphens
-            var components = newString.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
-            //Rejoin them5
-            var decimalString = "".join(components) as NSString
+            let components = newString.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+            //Rejoin them
+            let decimalString = components.joinWithSeparator("")//"".join(components) as NSString
             //Get the string length
-            var length = decimalString.length
+            let length = decimalString.characters.count
             //Is the first character a 1? true or false
-            var hasLeadingOne = length > 0 && decimalString.characterAtIndex(0) == 49 //unichar value of 1
+            let hasLeadingOne = length > 0 && decimalString.characters.first == "1"
+            //var hasLeadingOne = length > 0 && components[0] == "1"//decimalString.characterAtIndex(0) == 49 //unichar value of 1
             //Is the string empty, or if no leading one is the string longer than 10 numbers (11 with the 1)
             if length == 0 || (length > 10 && !hasLeadingOne) || length > 11{
-                var newLength = (textField.text as NSString).length + (string as NSString).length - range.length as Int
+                let newLength = (textField.text as NSString!).length + (string as NSString).length - range.length as Int
                 
                 return (newLength > 10) ? false : true
             }
             //this variable lets us move through the string
             var index = 0 as Int
             //create a mutable string that we can fill
-            var formattedString = NSMutableString()
+            let formattedString = NSMutableString()
             
             //If no leading one add one
             if !hasLeadingOne{
@@ -234,18 +232,18 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
             
             //add parentheses for areacode
             if (length - index) > 3{
-                var areaCode = decimalString.substringWithRange(NSMakeRange(index, 3))
+                let areaCode = decimalString.substringWithRange(decimalString.startIndex.advancedBy(index)...decimalString.startIndex.advancedBy(index + 2))
                 formattedString.appendFormat("(%@)", areaCode)
                 index += 3
             }
             
             if length - index > 3{
-                var prefix = decimalString.substringWithRange(NSMakeRange(index, 3))
+                let prefix = decimalString.substringWithRange(decimalString.startIndex.advancedBy(index)...decimalString.startIndex.advancedBy(index + 2))
                 formattedString.appendFormat("%@-", prefix)
                 index += 3
             }
             
-            var remainder = decimalString.substringFromIndex(index)
+            let remainder = decimalString.substringFromIndex(decimalString.startIndex.advancedBy(index))
             formattedString.appendString(remainder)
             textField.text = formattedString as String
             return false
@@ -256,14 +254,14 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
                 return true
             }
             //Is the new input a number? If not, disallow it
-            let isnum = string.toInt()
+            let isnum = Int(string)
             
             if isnum == nil{
                 return false
             }
             
             //Is the length greater than 5? If so, disallow it
-            let newLength = count(textField.text) + count(string) - range.length
+            let newLength = (textField.text?.characters.count)! + string.characters.count - range.length
             if (newLength > 5){
                 return false
             }
@@ -299,12 +297,13 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
     //***************************************************
     // Generate the prescription
     @IBAction func generateRx(sender: UIBarButtonItem) {
+        //
         //println("Generate button pressed")
         //Make sure the info is available when we need it
-        TSClient.sharedInstance().patient.Name = ptName.text
-        TSClient.sharedInstance().patient.Address = ptAddress.text
-        TSClient.sharedInstance().patient.Zip = ptZip.text
-        TSClient.sharedInstance().patient.Phone = ptPhone.text
+        TSClient.sharedInstance().patient.Name = ptName.text!
+        TSClient.sharedInstance().patient.Address = ptAddress.text!
+        TSClient.sharedInstance().patient.Zip = ptZip.text!
+        TSClient.sharedInstance().patient.Phone = ptPhone.text!
         
         let controller = self.storyboard?.instantiateViewControllerWithIdentifier("GeneratorViewController") as! GeneratorViewController
         controller.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
@@ -319,9 +318,9 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
         
         //Display a dialog to confirm this action
         //Create the basic alertcontroller
-        var alert = UIAlertController(title: "Clear Prescription?", message: "This will delete all prescription data", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Clear Prescription?", message: "This will delete all prescription data", preferredStyle: UIAlertControllerStyle.Alert)
         //Add the actions
-        alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction) in
             //Clear the Data
             TSClient.sharedInstance().rxClear()
             //Reset the patient data
@@ -368,7 +367,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
     //***************************************************
     func checkPatientData() -> Bool{
         //Are all the fields complete?
-        if (ptName.text.isEmpty || ptAddress.text.isEmpty  || ptZip.text.isEmpty || ptPhone.text.isEmpty) {
+        if (ptName.text!.isEmpty || ptAddress.text!.isEmpty  || ptZip.text!.isEmpty || ptPhone.text!.isEmpty) {
                 //No, return false
                 return false
         }else{
@@ -383,16 +382,17 @@ class RxViewController: UITableViewController, UITextFieldDelegate, UITableViewD
         //build the fetchRequest
         let fetchRequest = NSFetchRequest(entityName: "PTPractice")
         //If there are results, grab them. If not move on
-        if let results = sharedContext.executeFetchRequest(fetchRequest, error: error) {
+
+        do {
+            let results = try sharedContext.executeFetchRequest(fetchRequest)
             if error != nil{
                 //Nice alertview
                 TSClient.sharedInstance().errorDialog(self, errTitle: "Favorites Load Error", action: "OK", errMsg: "Error loading favorites from disk")
             }else{
-                TSClient.sharedInstance().practices = results as! [PTPractice]
-                for practice in TSClient.sharedInstance().practices{
-                    //println("\(practice.name)\n")
-                }
+                TSClient.sharedInstance().practices = results as! [PTPractice] 
             }//if/else
+        } catch let error1 as NSError {
+            error.memory = error1
         }//if let
     }//loadFavorites
         

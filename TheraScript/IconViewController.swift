@@ -35,7 +35,7 @@ class IconViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
         
         //Add a completion button to the nav bar
-        var acceptButton = UIBarButtonItem(title: "Accept", style: UIBarButtonItemStyle.Plain, target: self, action: "saveIcon")
+        let acceptButton = UIBarButtonItem(title: "Accept", style: UIBarButtonItemStyle.Plain, target: self, action: "saveIcon")
         navigationItem.rightBarButtonItem = acceptButton
     }//viewDidLoad
     
@@ -58,7 +58,7 @@ class IconViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     // Delegate Methods
     //***************************************************
     //We got an image, so show it
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         //Clear out the instruction text once the user has selected his own icon image
         iconTopText.text = ""
         iconBottomText.text = ""

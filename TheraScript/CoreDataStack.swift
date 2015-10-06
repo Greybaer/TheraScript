@@ -47,7 +47,7 @@ class CoreDataStackManager{
     // The directory the application uses to store the Core Data store file. This code uses a directory named "com.infiniteloop-slc.VirtualTourist" in the application's documents Application Support directory
     lazy var applicationDocumentsDirectory: NSURL = {
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] as! NSURL
+        return urls[urls.count-1] 
         }()//applicationDocumentsDirectory
     
     // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
@@ -63,7 +63,10 @@ class CoreDataStackManager{
         let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent(FILENAME)
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."
-        if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) == nil {
+        do {
+            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+        } catch var error1 as NSError {
+            error = error1
             coordinator = nil
             // Report any error we got.
             var dict = [String: AnyObject]()
@@ -77,6 +80,8 @@ class CoreDataStackManager{
             // Retained for development - REMOVE FOR SHIPPING APPS!!!
             NSLog("Unresolved error \(error), \(error!.userInfo)")
             abort()
+        } catch {
+            fatalError()
         }
         return coordinator
         }()//persistentStoreCoordinator
@@ -95,13 +100,18 @@ class CoreDataStackManager{
     func saveContext () {
         if let moc = self.managedObjectContext {
             var error: NSError? = nil
-            if moc.hasChanges && !moc.save(&error) {
-                // NOTE: a graceful alertview here would be nice.
+            if moc.hasChanges {
+                do {
+                    try moc.save()
+                } catch let error1 as NSError {
+                    error = error1
+                    // NOTE: a graceful alertview here would be nice.
 
-                // abort() causes the application to generate a crash log and terminate. 
-                // Retained for development - REMOVE FOR SHIPPING APPS!!!
-                NSLog("Unresolved error \(error), \(error!.userInfo)")
-                abort()
+                    // abort() causes the application to generate a crash log and terminate. 
+                    // Retained for development - REMOVE FOR SHIPPING APPS!!!
+                    NSLog("Unresolved error \(error), \(error!.userInfo)")
+                    abort()
+                }
             }
         }
     }//saveContext

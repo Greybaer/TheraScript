@@ -24,7 +24,7 @@ class PTFavoritesViewController: UIViewController, UITableViewDataSource, UITabl
         //Add a completion button to the nav bar
         //Has to be done here because tabs don't reload on navigation between views
         
-        var editButton = UIBarButtonItem(title: "Remove", style: UIBarButtonItemStyle.Plain, target: self, action: "editFavorites")
+        let editButton = UIBarButtonItem(title: "Remove", style: UIBarButtonItemStyle.Plain, target: self, action: "editFavorites")
         self.tabBarController!.navigationItem.rightBarButtonItem = editButton
         
         //Set the title of the view
@@ -53,7 +53,7 @@ class PTFavoritesViewController: UIViewController, UITableViewDataSource, UITabl
     }//numberOfRows
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("PTCell") as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("PTCell") as UITableViewCell!
         
         let practice = TSClient.sharedInstance().practices[indexPath.row]
         
@@ -67,7 +67,7 @@ class PTFavoritesViewController: UIViewController, UITableViewDataSource, UITabl
         //println("Selected cell")
         
         //Get the practice info for the row chosen
-        var practice = TSClient.sharedInstance().practices[indexPath.row]
+        let practice = TSClient.sharedInstance().practices[indexPath.row]
         
         //Grab the data for display. It's already saved, so no dialog and no Core Data save
         TSClient.sharedInstance().therapy.practiceName = practice.name

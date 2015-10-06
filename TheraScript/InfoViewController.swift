@@ -166,27 +166,27 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
                     return true
                 }
                 //Is the new input a number? If not, disallow it
-                let isnum = string.toInt()
+                let isnum = Int(string)
                 
                 if isnum == nil{
                     return false
                 }
                 
                 // Adapted from http://stackoverflow.com/questions/27609104/xcode-swift-formatting-text-as-phone-number
-                var newString = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
-                var components = newString.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+                let newString = (textField.text as NSString!).stringByReplacingCharactersInRange(range, withString: string)
+                let components = newString.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
             
-                var decimalString = "".join(components) as NSString
-                var length = decimalString.length
-                var hasLeadingOne = length > 0 && decimalString.characterAtIndex(0) == 49 //unichar value of 1
+                let decimalString = components.joinWithSeparator("") //"".join(components) as NSString
+                let length = decimalString.characters.count //decimalString.length
+                let hasLeadingOne = length > 0 && decimalString.characters.first == "1" //decimalString.characterAtIndex(0) == 49 //unichar value of 1
             
                 if length == 0 || (length > 10 && !hasLeadingOne) || length > 11{
-                    var newLength = (textField.text as NSString).length + (string as NSString).length - range.length as Int
+                    let newLength = (textField.text as NSString!).length + (string as NSString).length - range.length as Int
                 
                     return (newLength > 10) ? false : true
                 }
                 var index = 0 as Int
-                var formattedString = NSMutableString()
+                let formattedString = NSMutableString()
             
                 //If no leading one add one
                 if !hasLeadingOne{
@@ -199,18 +199,21 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
                 }
             
                 if (length - index) > 3{
-                    var areaCode = decimalString.substringWithRange(NSMakeRange(index, 3))
+                    let areaCode = decimalString.substringWithRange(decimalString.startIndex.advancedBy(index)...decimalString.startIndex.advancedBy(index + 2))
+                    //var areaCode = decimalString.substringWithRange(NSMakeRange(index, 3))
                     formattedString.appendFormat("(%@)", areaCode)
                     index += 3
                 }
             
-                if length - index > 3{
-                    var prefix = decimalString.substringWithRange(NSMakeRange(index, 3))
+                if (length - index) > 3{
+                    let prefix = decimalString.substringWithRange(decimalString.startIndex.advancedBy(index)...decimalString.startIndex.advancedBy(index + 2))
+                    //var prefix = decimalString.substringWithRange(NSMakeRange(index, 3))
                     formattedString.appendFormat("%@-", prefix)
                     index += 3
                 }
             
-                var remainder = decimalString.substringFromIndex(index)
+                let remainder = decimalString.substringFromIndex(decimalString.startIndex.advancedBy(index))
+                //var remainder = decimalString.substringFromIndex(index)
                 formattedString.appendString(remainder)
                 textField.text = formattedString as String
                 return false
@@ -222,14 +225,15 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 //Is the new input a number? If not, disallow it
-                let isnum = string.toInt()
+                let isnum = Int(string)
             
                 if isnum == nil{
                     return false
                 }
             
                 //Is the length greater than 5? If so, disallow it
-                let newLength = count(textField.text) + count(string) - range.length
+                let newLength = (textField.text?.characters.count)! + string.characters.count - range.length
+                //let newLength = count(textField.text) + count(string) - range.length
                 if (newLength > 5){
                     return false
                 }
@@ -242,18 +246,19 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 //2 letters only
-                let isnum = string.toInt()
+                let isnum = Int(string)
                 if isnum != nil{
                     return false
                 }
 
                 //An make it 2 chars long
-                let newLength = count(textField.text) + count(string) - range.length
+                let newLength = (textField.text?.characters.count)! + string.characters.count - range.length
+                //let newLength = count(textField.text) + count(string) - range.length
                 if (newLength > 2){
                     return false
                 }
                 //Make sure it's all uppercase
-                textField.text = textField.text + string.uppercaseString
+                textField.text = textField.text! + string.uppercaseString
                 return false
             
             default:
@@ -270,21 +275,21 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
     // Validate input info - if correct save and transition
     // to the graphic view
     @IBAction func nextButtonClicked(sender: AnyObject) {
-        if (firstName.text.isEmpty || middleName.text.isEmpty || lastName.text.isEmpty || degreeType.text.isEmpty || phoneNumber.text.isEmpty || practiceName.text.isEmpty || streetAddress.text.isEmpty || cityName.text.isEmpty || stateName.text.isEmpty || zipCode.text.isEmpty){
+        if (firstName.text!.isEmpty || middleName.text!.isEmpty || lastName.text!.isEmpty || degreeType.text!.isEmpty || phoneNumber.text!.isEmpty || practiceName.text!.isEmpty || streetAddress.text!.isEmpty || cityName.text!.isEmpty || stateName.text!.isEmpty || zipCode.text!.isEmpty){
             //Pop an error and return
             TSClient.sharedInstance().errorDialog(self, errTitle: "Information Entry Incomplete", action: "OK", errMsg: "One or more information fields are incomplete. Please ensure that all fields are completed")
         }else{
             //Populate the provider data structure for passing on
-            provider.firstName = firstName.text
-            provider.middleName  = middleName.text
-            provider.lastName = lastName.text
-            provider.degreeType = degreeType.text
-            provider.phoneNumber = phoneNumber.text
-            provider.practiceName = practiceName.text
-            provider.streetAddress = streetAddress.text
-            provider.cityName = cityName.text
-            provider.stateName = stateName.text
-            provider.zipCode = zipCode.text
+            provider.firstName = firstName.text!
+            provider.middleName  = middleName.text!
+            provider.lastName = lastName.text!
+            provider.degreeType = degreeType.text!
+            provider.phoneNumber = phoneNumber.text!
+            provider.practiceName = practiceName.text!
+            provider.streetAddress = streetAddress.text!
+            provider.cityName = cityName.text!
+            provider.stateName = stateName.text!
+            provider.zipCode = zipCode.text!
         
             //Display a controller to grab the icon
             let controller = self.storyboard?.instantiateViewControllerWithIdentifier("IconViewController") as! IconViewController

@@ -58,7 +58,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
     // Re-use method for displaying pins -
     // ripped from the PinSample code. I have plenty to do without re-inventing the wheel
     //***************************************************
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseId = "pin"
         
@@ -73,7 +73,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
             let imageUnselected = UIImage(named: "OK.png") as UIImage!
             let imageSelected = UIImage(named: "OKSel.png") as UIImage!
             //Create a button
-            let button = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+            let button = UIButton(type: UIButtonType.Custom)
             button.frame = CGRectMake(25,25,25,25)
             //Set the images
             button.setImage(imageUnselected, forState: .Normal)
@@ -89,20 +89,20 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
         return pinView
     }//viewForAnnotation
     
-    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         //println("User selected \(view.annotation.title!)")
 
         //Split the subtitle string into address and phone
-        var splitString: String = view.annotation.subtitle!
+        let splitString: String = view.annotation!.subtitle!!
         var splitArray = splitString.componentsSeparatedByString(" ∙ ")
 
         //Save the data for later Core Data storage
-        TSClient.sharedInstance().therapy.practiceName = view.annotation.title!
+        TSClient.sharedInstance().therapy.practiceName = view.annotation!.title!!
         TSClient.sharedInstance().therapy.practiceAddress = splitArray[0]
         TSClient.sharedInstance().therapy.practicePhone = splitArray[1]
 
         //Is this entry already saved to favoirites?
-        var duplicate = TSClient.sharedInstance().checkDuplicate()
+        let duplicate = TSClient.sharedInstance().checkDuplicate()
         
         if !duplicate{
             //Show a dialog to allow the user to save this practice to favorites if desired
@@ -113,7 +113,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
         }
     }//callout selected
     
-    func mapViewDidFinishRenderingMap(mapView: MKMapView!, fullyRendered: Bool) {
+    func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {
         //Perform the search for nearby Therapy Practices
         doTherapySearch()
     }//mapDidFinishRender
@@ -126,7 +126,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
     // Set up the Therapy Search map with the pins we need
     func mapSetup(){
         //Address
-        var address = "\(TSClient.sharedInstance().patient.Address),\(TSClient.sharedInstance().patient.Zip)"
+        let address = "\(TSClient.sharedInstance().patient.Address),\(TSClient.sharedInstance().patient.Zip)"
         dispatch_async(dispatch_get_main_queue()){
             //Start the spinner
             self.spinner.startAnimating()
@@ -142,8 +142,8 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
                 self.placemark = placemark as! CLPlacemark
                 //Then use the location data to set the region centered on the patient's address
                 //get the coordinates
-                let longitude = self.placemark.location.coordinate.longitude
-                let latitude = self.placemark.location.coordinate.latitude
+                let longitude = self.placemark.location!.coordinate.longitude
+                let latitude = self.placemark.location!.coordinate.latitude
                 //set the center of the map view
                 let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                 //20K (about 12 mile) span to start for region
@@ -173,25 +173,24 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
             request.region = self.PTMapView.region
             //Execute the search
             let search = MKLocalSearch(request: request)
-            var error: NSError?
             search.startWithCompletionHandler {(response, error) in
                 if response == nil{
                     dispatch_async(dispatch_get_main_queue()){
                         //self.spinner.stopAnimating()
-                        TSClient.sharedInstance().errorDialog(self, errTitle: "Therapy Search Error", action: "OK", errMsg: error.localizedDescription)
+                        TSClient.sharedInstance().errorDialog(self, errTitle: "Therapy Search Error", action: "OK", errMsg: error!.localizedDescription)
                     }//main_queue
                 }else{
                     //println(response.mapItems)
-                    for item in response.mapItems as! [MKMapItem]{
-                        var pin = MKPointAnnotation()
+                    for item in response!.mapItems {
+                        let pin = MKPointAnnotation()
                         pin.coordinate = item.placemark.coordinate
                         //Massage the phonenumber into the right format
-                        var phone = self.formatPhone(item.phoneNumber)
+                        let phone = self.formatPhone(item.phoneNumber!)
                         //Title will be practice name and phone so we can split it later
                         pin.title = (item.name)
                         
                         //Build the address manually.
-                        var address = "\(item.placemark.subThoroughfare) \(item.placemark.thoroughfare) \(item.placemark.locality), \(item.placemark.administrativeArea) \(item.placemark.postalCode)"
+                        let address = "\(item.placemark.subThoroughfare!) \(item.placemark.thoroughfare!) \(item.placemark.locality!), \(item.placemark.administrativeArea!) \(item.placemark.postalCode!)"
                         pin.subtitle = "\(address) ∙ \(phone)"
                         self.annotations.append(pin)
                     }//for
@@ -204,17 +203,18 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
             //Stop the spinner
         }//doTherapySearch
     
-    func formatPhone(number: String) -> String {
-        //Start by lopping off the + sign
-        var newNumber: String = dropFirst(number)
-        //Now create a mutable string from the number
-        var mutableNumber: NSMutableString = NSMutableString(string: newNumber)
-        //And add the formatting characters
-        mutableNumber.insertString("(", atIndex: 1)
-        mutableNumber.insertString(")", atIndex: 5) //not 4 now, because of the paren!
-        mutableNumber.insertString("-", atIndex: 9)
+    func formatPhone(var number: String) -> String {
+        //The new format of the phone is a unicode string with garbage in front and the other chars already inserted.
+        //Now all we need to do is strip that out and add the 1
+        //Get the index of the areacode opening paren
+        let index = number.characters.indexOf("(")
+        //Start by removing anything before the areacode paren
+        number.removeRange(Range<String.Index>(start: number.startIndex, end: index!))
+        // Create a variable string we can modify
+        var newNumber = number
+        //Prepend a 1 to the front
+        newNumber.insert("1", atIndex: newNumber.startIndex)
         //Transform it back into a string
-        newNumber = mutableNumber as (String)
         //and return the result
         return newNumber
     }//formatPhone

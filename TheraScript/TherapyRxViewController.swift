@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TherapyRxViewController: UITableViewController, UITableViewDelegate {
+class TherapyRxViewController: UITableViewController {
     
     //Variables
     
@@ -42,7 +42,7 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
         super.viewDidLoad()
 
         //Add a completion button to the nav bar
-        var acceptButton = UIBarButtonItem(title: "Accept", style: UIBarButtonItemStyle.Plain, target: self, action: "savePTRx")
+        let acceptButton = UIBarButtonItem(title: "Accept", style: UIBarButtonItemStyle.Plain, target: self, action: "savePTRx")
         navigationItem.rightBarButtonItem = acceptButton
         
         //Set the min and max stepper values and the increment value
@@ -63,12 +63,6 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Sign up for Keyboard notifications
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        //KB Hide Notification
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillDisappear:", name: UIKeyboardWillHideNotification,
-            object: nil)
 
         //get the prescription data
         getRxInfo()
@@ -79,10 +73,7 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        //Remove us from keyboard notifications
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillShow:", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillDisappear:", object: nil)
+
     }//viewWillDisappear
 
     //***************************************************
@@ -126,7 +117,7 @@ class TherapyRxViewController: UITableViewController, UITableViewDelegate {
     // incrementVisits - Change the number of PT visits prescribed - defaults to 4
     @IBAction func incrementVisits(sender: UIStepper) {
         //Convert float to int and then to string for display
-        var visits = String(format: "%d", Int(sender.value))
+        let visits = String(format: "%d", Int(sender.value))
         //Stepper makes this dead simple - just return the sender value
         self.visitNumber.text = visits
     }

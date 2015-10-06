@@ -2,7 +2,7 @@
 //  ImageCache.swift
 //  TheraScript
 //
-//  Methods to save/retrieve image data from disk 
+//  Methods to save/retrieve image data from disk
 //
 //  Created by Greybear on 6/22/15.
 //  Copyright (c) 2015 Infinite Loop, LLC. All rights reserved.
@@ -19,7 +19,7 @@ class ImageCache {
     //***************************************************
     // Get a complete path for the documents directory
     func pathForIdentifier(identifier:String) -> String {
-        let documentsDirectoryURL: NSURL =  NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first! as! NSURL
+        let documentsDirectoryURL: NSURL =  NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first! 
         
         let fullPathURL = documentsDirectoryURL.URLByAppendingPathComponent(identifier)
         return fullPathURL.path!
@@ -31,9 +31,8 @@ class ImageCache {
         if identifier == nil || identifier! == "" {
             return nil
         }
-        
+        //image path
         let path = pathForIdentifier(identifier!)
-        var data: NSData?
         
         // Memory Cache
         if let image = memoryCache.objectForKey(path) as? UIImage {
@@ -57,7 +56,10 @@ class ImageCache {
         //Remove images from cache and hard disk?
         if image == nil {
             memoryCache.removeObjectForKey(path)
-            NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
+            do {
+                try NSFileManager.defaultManager().removeItemAtPath(path)
+            } catch _ {
+            }
             //println("Image deleted")
             return
         }
@@ -69,7 +71,7 @@ class ImageCache {
         //Save the data as JPEG - The Photos on the phone hate PNG
         let data = UIImageJPEGRepresentation(image!, 0.5)
         //let data = UIImagePNGRepresentation(image!)
-        if  data.writeToFile(path, atomically: true) {
+        if  data!.writeToFile(path, atomically: true) {
             //println("Image stored")
         }
     }//storeImageJPG
@@ -83,7 +85,10 @@ class ImageCache {
         //Remove images from cache and hard disk?
         if image == nil {
             memoryCache.removeObjectForKey(path)
-            NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
+            do {
+                try NSFileManager.defaultManager().removeItemAtPath(path)
+            } catch _ {
+            }
             //println("Image deleted")
             return
         }
@@ -95,7 +100,7 @@ class ImageCache {
         //Save the data as JPEG - The Photos on the phone hate PNG
         //let data = UIImageJPEGRepresentation(image!, 0.5)
         let data = UIImagePNGRepresentation(image!)
-        if  data.writeToFile(path, atomically: true) {
+        if  data!.writeToFile(path, atomically: true) {
             //println("Image stored")
         }
     }//storeImagePNG
