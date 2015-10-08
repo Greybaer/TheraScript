@@ -42,6 +42,7 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
     
     
     //Prescription info
+    @IBOutlet var RxView: UIView!
     @IBOutlet weak var visits: UILabel!
     @IBOutlet weak var report: UILabel!
     @IBOutlet weak var modalities: UIImageView!
@@ -58,18 +59,26 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
     @IBOutlet weak var cSoftCollar: UIImageView!
     @IBOutlet weak var cHardCollar: UIImageView!
     
+    //Transmission buttons
+    @IBOutlet weak var printRx: UIBarButtonItem!
+    @IBOutlet weak var textRx: UIBarButtonItem!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //Hide the toolbar
-        self.navigationController?.toolbarHidden = true
+        //self.navigationController?.toolbarHidden = true
     }//viewDidLoad
     
     override func viewWillAppear(animated: Bool) {
+
+        //This moves to specific buttons for each transmission function
         //Add a settings button to the nav bar
-        let settingsButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "sendSMS")
-        self.navigationItem.rightBarButtonItem = settingsButton
+        //let settingsButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "sendSMS")
+        
+        //let settingsButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "sendPrescription")
+        //self.navigationItem.rightBarButtonItem = settingsButton
         
         //Now, are we text enabled? 
         let sms = MFMessageComposeViewController.canSendText()
@@ -77,12 +86,14 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         let mms = MFMessageComposeViewController.canSendAttachments()
         
         //We need at least one to work, so if neither work disable texting
+        //Move this into the share function
         if sms == false || mms == false{
-            settingsButton.enabled = false
+            textRx.enabled = false
         }
         else{
-            settingsButton.enabled = true
+            textRx.enabled = true
         }
+        
         //These are done here because the data may need to change between views
         //rather than loads
         
@@ -167,11 +178,9 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
        case MessageComposeResultFailed.rawValue:
            TSClient.sharedInstance().errorDialog(controller, errTitle: "Message Send Failed", action: "OK", errMsg: "Message unable to be sent")
             self.dismissViewControllerAnimated(true, completion: nil)
-        case MessageComposeResultSent.rawValue:
-            TSClient.sharedInstance().errorDialog(controller, errTitle: "Message Cancelled", action: "OK", errMsg: "Message will not be sent")
+        default:
+            TSClient.sharedInstance().errorDialog(controller, errTitle: "Message Sent", action: "OK", errMsg: "Message sent successfully")
             self.dismissViewControllerAnimated(true, completion: nil)
-       default:
-            break;
        }//switch
     }//MessageControllerDidFinish
     
@@ -181,7 +190,7 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
     
     //***************************************************
     // Send a text message if device enabled
-    func sendSMS(){
+    @IBAction func sendSMS(){
         //Adapted from http://www.ioscreator.com/tutorials/send-sms-messages-tutorial-ios8-swift
         
         //create a message controller object
@@ -194,11 +203,29 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         //We default to sending to the therapist and the patient
         messageVC.recipients = [TSClient.sharedInstance().therapy.practicePhone, TSClient.sharedInstance().patient.Phone]
         //Handle things ourselves
-        messageVC.messageComposeDelegate = self;
+        messageVC.messageComposeDelegate = self
         //Present a modal view to complete the process
         self.presentViewController(messageVC, animated: false, completion: nil)
     }//sendSMS
    
+    @IBAction func printRx(sender: AnyObject) {
+        
+        //We're going to print a PDF
+        let pdfRx = pdfFromView()
+        
+        //create the controller
+        let printVC = UIPrintInteractionController.sharedPrintController()
+        
+        //point the controller to the pdf data
+        printVC.printingItem = pdfRx
+        
+        //Let's try a png
+        //let data = dataFromView()
+        //printVC.printingItem = data
+        
+        printVC.presentAnimated(true, completionHandler: nil)
+    }//printRx
+    
     //***************************************************
     // Helper functions
     //***************************************************
@@ -229,5 +256,28 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         //return the NSData object
         return data
     }//dataFromView
+   
+    //***************************************************
+    // Transform the view into a PDF
+    func pdfFromView() -> NSMutableData{
+        
+        //Creat a mutable data object
+        let pdfData =  NSMutableData()
+        
+        //Point the pdf convertor to the data object and the view
+        UIGraphicsBeginPDFContextToData(pdfData, self.view.bounds, nil)
+        //Being the page
+        UIGraphicsBeginPDFPage()
+        //get the context
+        let pdfContext = UIGraphicsGetCurrentContext()
+        //draw rect to view and capture with context
+        self.view.layer.renderInContext(pdfContext!)
+        //End the page
+        UIGraphicsEndPDFContext()
+
+        //return the pdf data
+        return pdfData
+    }//pdfFromView
+    
 }//class
 
