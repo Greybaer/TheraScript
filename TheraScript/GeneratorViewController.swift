@@ -208,11 +208,13 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         self.presentViewController(messageVC, animated: false, completion: nil)
     }//sendSMS
    
+    //***************************************************
+    // Print the prescription as a PDF file
     @IBAction func printRx(sender: AnyObject) {
         
-        //We're going to print a PDF
+        //We're going to print a PDF, so convert the view
         let pdfRx = pdfFromView()
-        
+              
         //create the controller
         let printVC = UIPrintInteractionController.sharedPrintController()
         
