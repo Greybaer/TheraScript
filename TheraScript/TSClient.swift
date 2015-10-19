@@ -315,6 +315,8 @@ class TSClient: NSObject{
         }
     }
 
+    //***************************************************
+    // Check for duplicte favorites entry
     func checkDuplicate() -> Bool {
        
         //Build predicates for name and address so we can look for them
@@ -342,6 +344,29 @@ class TSClient: NSObject{
    }//checkDuplicates
     
     //***************************************************
+    // Save PT Practice info - used to add favorites outside of Rx generation
+    func addFavorite() {
+        
+        //Create a dictionary of the new data
+        let dictionary: [String : AnyObject] = [
+            PTPractice.Keys.Name : self.therapy.practiceName as String,
+            PTPractice.Keys.Address : self.therapy.practiceAddress as String,
+            PTPractice.Keys.Phone : self.therapy.practicePhone as String
+        ]//dictionary
+
+        //And a new object to hold the data
+        let newPractice = PTPractice(dictionary: dictionary, context: self.sharedContext)
+        
+        //And save it to Core Data
+        dispatch_async(dispatch_get_main_queue()) {
+            CoreDataStackManager.sharedInstance().saveContext()
+        }
+        
+        //Append the the array so it shows up immediately
+        self.practices.append(newPractice)
+    }//addFavorite
+    
+    //***************************************************
     // Create an AlertView to allow user to save to favorites if desired
     func confirmationDialog(viewController: UIViewController) -> Void{
         //Make sure the data actually got to the right place...
@@ -357,30 +382,6 @@ class TSClient: NSObject{
 
         //And a new object to hold the data
         let newPractice = PTPractice(dictionary: dictionary, context: self.sharedContext)
- /*
-        //Build predicates for name and address so we can look for them
-        let predicate1 = NSPredicate(format: "name = %@", self.therapy.practiceName)
-        let predicate2 = NSPredicate(format: "address = %@", self.therapy.practiceAddress)
-        
-        //Now perform a fetch, looking for results that match
-        let request = NSFetchRequest(entityName: "PTPractice")
-        request.returnsObjectsAsFaults = false
-        
-        //Form the predicate search term
-        request.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
-        
-        var result: NSArray = sharedContext.executeFetchRequest(request, error: nil)!
-        
-        //If we get a result, just close and continue
-        if result.count != 0{
-            //Let's look at them to check...
-            var practices = result as! [PTPractice]
-            viewController.navigationController?.popToRootViewControllerAnimated(true)
-            return
-        }
-        
-        //No match, pop the dialog to allow the user to save to favorites
-*/
         //Create the basic alertcontroller
         let alert = UIAlertController(title: "Save Therapist", message: "Save this therapy practice to favorites?", preferredStyle: UIAlertControllerStyle.Alert)
         //Add the actions

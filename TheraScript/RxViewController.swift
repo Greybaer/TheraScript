@@ -58,7 +58,11 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var generateRxButton: UIBarButtonItem!
     //And the clear button
     @IBOutlet weak var clearRxButton: UIBarButtonItem!
-    
+    //Show Favorites
+    @IBOutlet weak var showFavoritesButton: UIBarButtonItem!
+    //Will go away
+    //Add Favorite button
+    @IBOutlet weak var addFavoriteButton: UIBarButtonItem!
     
     //***************************************************
     // Class Methods
@@ -346,7 +350,14 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
         }))
         //Show the dialog
         self.presentViewController(alert, animated: true, completion: nil)
-    }
+    }//clearRx
+    
+    //***************************************************
+    // Show favorites
+    @IBAction func showFavorites(){
+        let FavoriteVC = self.storyboard?.instantiateViewControllerWithIdentifier("ManageFavoritesTableViewController") as! ManageFavoritesTableViewController
+        self.navigationController?.pushViewController(FavoriteVC, animated: true)
+    }//showFavorites
     
     //***************************************************
     // Display/edit the current Provider settings

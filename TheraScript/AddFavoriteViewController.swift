@@ -1,50 +1,49 @@
 //
-//  ManualPTViewController.swift
+//  AddFavoriteViewController.swift
 //  TheraScript
 //
-//  Created by Greybear on 8/31/15.
-//  Copyright (c) 2015 Infinite Loop, LLC. All rights reserved.
+//  Created by Greybear on 10/13/15.
+//  Copyright © 2015 Infinite Loop, LLC. All rights reserved.
 //
 
 import UIKit
+import CoreData
 
-class ManualPTViewController: UIViewController, UITextFieldDelegate {
+class AddFavoriteViewController: UIViewController, UITextFieldDelegate {
 
     //Variables
-    
-    //Keyboard up?
     var kbUp = false
-
-
     
+    //Shorthand for the CoreData context
+    var sharedContext: NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().managedObjectContext!
+    }
+
     //Outlets
-    @IBOutlet weak var PTPractice: UITextField!
+    @IBOutlet weak var PTName: UITextField!
     @IBOutlet weak var PTAddress: UITextField!
     @IBOutlet weak var PTCity: UITextField!
     @IBOutlet weak var PTState: UITextField!
     @IBOutlet weak var PTZip: UITextField!
     @IBOutlet weak var PTPhone: UITextField!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         //We're our own delegate
-        PTPractice.delegate = self
+        PTName.delegate = self
         PTAddress.delegate = self
         PTCity.delegate = self
         PTState.delegate = self
         PTZip.delegate = self
         PTPhone.delegate = self
-    }//viewDidLoad
-    
+  }//viewDidLoad
+
     override func viewWillAppear(animated: Bool) {
         //Add a completion button to the nav bar
         //Adding nav items has to be done here because tabs don't reload on navigation between views
-
-        let acceptButton = UIBarButtonItem(title: "Accept", style: UIBarButtonItemStyle.Plain, target: self, action: "savePTInfo")
-        self.tabBarController!.navigationItem.rightBarButtonItem = acceptButton
         
-        //Set the title of the view
-        self.tabBarController!.navigationItem.title = "Manual Practice Entry"
+        let acceptButton = UIBarButtonItem(title: "Add", style: UIBarButtonItemStyle.Plain, target: self, action: "savePTInfo")
+        navigationItem.rightBarButtonItem = acceptButton
         
         //Hide the toolbar here
         self.navigationController?.toolbarHidden = true
@@ -65,7 +64,6 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillDisappear:", object: nil)
     }//viewWillDisappear
 
-    
     //***************************************************
     // Delegate Functions
     //***************************************************
@@ -84,21 +82,20 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
     //...and slide it back down when the view requires
     func keyboardWillDisappear(notification: NSNotification){
         if PTPhone.isFirstResponder() && kbUp{
-                //just reset the origin to zero since we're getting multiple notifications
-                self.view.frame.origin.y = 0
-                //reset the flag
-                kbUp = false
-                //println("Sliding Frame down: \(self.view.frame.origin.y)")
+            //just reset the origin to zero since we're getting multiple notifications
+            self.view.frame.origin.y = 0
+            //reset the flag
+            kbUp = false
+            //println("Sliding Frame down: \(self.view.frame.origin.y)")
         }
     }//keyboardWillDisappear
-
-
+    
     //***************************************************
     // Handle returns by shifting focus
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         switch textField{
-        case PTPractice:
-            PTPractice.resignFirstResponder()
+        case PTName:
+            PTName.resignFirstResponder()
             PTAddress.becomeFirstResponder()
         case PTAddress:
             PTAddress.resignFirstResponder()
@@ -115,11 +112,11 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
         case PTPhone:
             PTPhone.resignFirstResponder()
         default:
-            PTPractice.becomeFirstResponder()
+            PTName.becomeFirstResponder()
         }//switch
         return false
     }//shouldReturn
-    
+
     //***************************************************
     //Handle formatting in phone and zip fields
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
@@ -152,7 +149,7 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
             }
             var index = 0 as Int
             let formattedString = NSMutableString()
-
+            
             //If no leading one add one
             if !hasLeadingOne{
                 formattedString.appendString("1")
@@ -179,7 +176,7 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
             formattedString.appendString(remainder)
             textField.text = formattedString as String
             return false
-
+            
         case PTState:
             //Empty string? return it (backspace)
             if string.isEmpty{
@@ -200,7 +197,7 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
             //Make sure it's all uppercase
             textField.text = textField.text! + string.uppercaseString
             return false
-
+            
         case PTZip:
             //Empty string? return it (backspace)
             if string.isEmpty{
@@ -223,35 +220,44 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
             return true
         }//switch
     }//shouldChangeCharactersInRange
-
+    
     //***************************************************
     // Action Functions
     //***************************************************
-
+    
     //***************************************************
     // savePTInfo - Save the manually entered practice info
     func savePTInfo(){
-        if(PTPractice.text!.isEmpty || PTAddress.text!.isEmpty || PTCity.text!.isEmpty || PTState.text!.isEmpty || PTZip.text!.isEmpty || PTPhone.text!.isEmpty){
-        //Pop an error and return
-        TSClient.sharedInstance().errorDialog(self, errTitle: "PT Information Entry Incomplete", action: "OK", errMsg: "One or more PT practice fields are incomplete. Please ensure that all fields are completed")
+        if(PTName.text!.isEmpty || PTAddress.text!.isEmpty || PTCity.text!.isEmpty || PTState.text!.isEmpty || PTZip.text!.isEmpty || PTPhone.text!.isEmpty){
+            //Pop an error and return
+            TSClient.sharedInstance().errorDialog(self, errTitle: "PT Information Entry Incomplete", action: "OK", errMsg: "One or more PT practice fields are incomplete. Please ensure that all fields are completed")
         }else{
             //Save the data for later Core Data storage
-            TSClient.sharedInstance().therapy.practiceName = PTPractice.text!
-            TSClient.sharedInstance().therapy.practiceAddress = "\(PTAddress.text) \(PTCity.text) \(PTState.text) \(PTZip.text)"
+            TSClient.sharedInstance().therapy.practiceName = PTName.text!
+            TSClient.sharedInstance().therapy.practiceAddress = "\(PTAddress.text!) \(PTCity.text!) \(PTState.text!) \(PTZip.text!)"
             TSClient.sharedInstance().therapy.practicePhone = PTPhone.text!
-
+            
             //Is this entry already saved to favoirites?
             let duplicate = TSClient.sharedInstance().checkDuplicate()
             
             if !duplicate{
-                //Show a dialog to allow the user to save this practice to favorites if desired
-                TSClient.sharedInstance().confirmationDialog(self)
+                //We'll do the add ourselves here rather than in the confirmation dialog
+                //The user already has implicitly chosen to add it
+                TSClient.sharedInstance().addFavorite()
+                
+                //We don't go away in order to allow multiple adds if desired,
+                //but clear the fields and display a success dialog
+                TSClient.sharedInstance().errorDialog(self, errTitle: "Favorite Added", action: "OK", errMsg: "Practice added to Favorites List")
+                PTName.text = ""
+                PTAddress.text = ""
+                PTCity.text = ""
+                PTState.text = ""
+                PTZip.text = ""
+                PTPhone.text = ""
             }else{
-                //Just return to Rx View
-                self.navigationController?.popToRootViewControllerAnimated(true)
+                //Show an error dialog to let the user know it's a duplicate
+                TSClient.sharedInstance().errorDialog(self, errTitle: "Duplicate Entry", action: "OK", errMsg: "This practice is already in the favorites list")
             }
-            
         }//if/else
     }//savePTInfo
-    
 }//class

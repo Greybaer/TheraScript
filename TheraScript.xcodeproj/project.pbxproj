@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A81A26461B680C35004B6F25 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81A26451B680C35004B6F25 /* ImageCache.swift */; };
+		A81EB9A31BCD6DD400B06349 /* AddFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81EB9A21BCD6DD400B06349 /* AddFavoriteViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		A82D22F51BD008A200FB1EF4 /* ManageFavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82D22F41BD008A200FB1EF4 /* ManageFavoritesTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		A84526991B837CDB00515D70 /* DiagnosisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84526981B837CDB00515D70 /* DiagnosisViewController.swift */; };
 		A84AC50E1B5D751700AEBEE1 /* IconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84AC50D1B5D751700AEBEE1 /* IconViewController.swift */; };
 		A8719FB11B61418B00913FCD /* RxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8719FB01B61418B00913FCD /* RxViewController.swift */; };
@@ -42,6 +44,8 @@
 
 /* Begin PBXFileReference section */
 		A81A26451B680C35004B6F25 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		A81EB9A21BCD6DD400B06349 /* AddFavoriteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFavoriteViewController.swift; sourceTree = "<group>"; };
+		A82D22F41BD008A200FB1EF4 /* ManageFavoritesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageFavoritesTableViewController.swift; sourceTree = "<group>"; };
 		A84526981B837CDB00515D70 /* DiagnosisViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagnosisViewController.swift; sourceTree = "<group>"; };
 		A84AC50D1B5D751700AEBEE1 /* IconViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconViewController.swift; sourceTree = "<group>"; };
 		A8719FB01B61418B00913FCD /* RxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxViewController.swift; sourceTree = "<group>"; };
@@ -116,7 +120,9 @@
 				A84AC50D1B5D751700AEBEE1 /* IconViewController.swift */,
 				A81A26451B680C35004B6F25 /* ImageCache.swift */,
 				A8DA46941B559D8900FFC950 /* InfoViewController.swift */,
+				A82D22F41BD008A200FB1EF4 /* ManageFavoritesTableViewController.swift */,
 				A8E800641B94FE9200C0E5A1 /* ManualPTViewController.swift */,
+				A81EB9A21BCD6DD400B06349 /* AddFavoriteViewController.swift */,
 				A874DFD61B960D9700C16A6C /* PTFavoritesViewController.swift */,
 				A883FCC81B8B7580002D273A /* PTMapViewController.swift */,
 				A8B4AE8D1BB42B000049EA0D /* PTPractice.swift */,
@@ -268,6 +274,8 @@
 			files = (
 				A8E800651B94FE9200C0E5A1 /* ManualPTViewController.swift in Sources */,
 				A8DDC6D31BB1E42800550E1B /* GeneratorViewController.swift in Sources */,
+				A82D22F51BD008A200FB1EF4 /* ManageFavoritesTableViewController.swift in Sources */,
+				A81EB9A31BCD6DD400B06349 /* AddFavoriteViewController.swift in Sources */,
 				A874DFD71B960D9700C16A6C /* PTFavoritesViewController.swift in Sources */,
 				A883FCC91B8B7580002D273A /* PTMapViewController.swift in Sources */,
 				A8AF79E71B78E9E6004A1619 /* TherapyRxViewController.swift in Sources */,

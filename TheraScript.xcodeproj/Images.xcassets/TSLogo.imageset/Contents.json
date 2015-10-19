@@ -2,8 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "TSLogo.pdf"
+      "filename" : "TSLogo.pdf",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",

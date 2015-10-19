@@ -27,6 +27,7 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
     @IBOutlet weak var providerPractice: UILabel!
     @IBOutlet weak var providerAddress: UILabel!
     @IBOutlet weak var providerAddress2: UILabel!
+    @IBOutlet weak var rxDate: UILabel!
     
     //Patient Info
     @IBOutlet weak var ptName: UILabel!
@@ -66,9 +67,19 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Hide the toolbar
-        //self.navigationController?.toolbarHidden = true
+ 
+        //Determine and configure the date
+        //Get the timestamp
+        let dateStamp = NSDate()
+        //Configure the formtter
+        let dateFormatter = NSDateFormatter()
+        //Set the format
+        dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
+        dateFormatter.timeStyle = .ShortStyle
+        //And grab the date in readable form
+        let dateString = dateFormatter.stringFromDate(dateStamp)
+        //Finally, populate the date label
+        rxDate.text = dateString
     }//viewDidLoad
     
     override func viewWillAppear(animated: Bool) {
@@ -217,13 +228,15 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
               
         //create the controller
         let printVC = UIPrintInteractionController.sharedPrintController()
+
+        //Landscape? Nope
+        let printInfo = UIPrintInfo(dictionary: nil)
+        printInfo.orientation = .Landscape
+        
+        printVC.printInfo = printInfo
         
         //point the controller to the pdf data
         printVC.printingItem = pdfRx
-        
-        //Let's try a png
-        //let data = dataFromView()
-        //printVC.printingItem = data
         
         printVC.presentAnimated(true, completionHandler: nil)
     }//printRx
@@ -268,8 +281,13 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         
         //Point the pdf convertor to the data object and the view
         UIGraphicsBeginPDFContextToData(pdfData, self.view.bounds, nil)
-        //Being the page
-        UIGraphicsBeginPDFPage()
+        //Begin the page
+        
+        //Using this gives you a large centered print
+        //UIGraphicsBeginPDFPage()
+        
+        //Using this gives you a small upper left print
+        UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, 792, 1122), nil)
         //get the context
         let pdfContext = UIGraphicsGetCurrentContext()
         //draw rect to view and capture with context
