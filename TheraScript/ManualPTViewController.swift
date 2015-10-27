@@ -237,7 +237,7 @@ class ManualPTViewController: UIViewController, UITextFieldDelegate {
         }else{
             //Save the data for later Core Data storage
             TSClient.sharedInstance().therapy.practiceName = PTPractice.text!
-            TSClient.sharedInstance().therapy.practiceAddress = "\(PTAddress.text) \(PTCity.text) \(PTState.text) \(PTZip.text)"
+            TSClient.sharedInstance().therapy.practiceAddress = "\(PTAddress.text!) \(PTCity.text!), \(PTState.text!) \(PTZip.text!)"
             TSClient.sharedInstance().therapy.practicePhone = PTPhone.text!
 
             //Is this entry already saved to favoirites?

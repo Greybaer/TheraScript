@@ -393,7 +393,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
         //build the fetchRequest
         let fetchRequest = NSFetchRequest(entityName: "PTPractice")
         //If there are results, grab them. If not move on
-
+        //fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         do {
             let results = try sharedContext.executeFetchRequest(fetchRequest)
             if error != nil{

@@ -9,8 +9,9 @@
 import UIKit
 import MapKit
 import CoreLocation
+import CoreData
 
-class PTMapViewController: UIViewController, MKMapViewDelegate {
+class PTMapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsControllerDelegate {
     
     //Variables
     
@@ -28,10 +29,12 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         //Hide the spinner when not needed
         self.spinner.hidesWhenStopped = true
         //We're our own delegate
         PTMapView.delegate = self
+        TSClient.sharedInstance().fetchedResultsController.delegate = self
         //Set up the map region
         mapSetup()
 
@@ -48,11 +51,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
         self.navigationController?.toolbarHidden = true
 
     }//viewWillAppear
-    
-    //***************************************************
-    // Map delegate Functions
-    //***************************************************
-    
+        
     
     //***************************************************
     // Re-use method for displaying pins -

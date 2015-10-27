@@ -79,6 +79,9 @@ extension TSClient{
     struct Therapy{
         var practiceName: String = ""
         var practiceAddress: String = ""
+        var practiceCity: String = ""
+        var practiceState: String = ""
+        var practiceZip: String = ""
         var practicePhone: String = ""
     }//Therapy
     

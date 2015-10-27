@@ -228,7 +228,7 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
               
         //create the controller
         let printVC = UIPrintInteractionController.sharedPrintController()
-
+        
         //Landscape? Nope
         let printInfo = UIPrintInfo(dictionary: nil)
         printInfo.orientation = .Landscape
@@ -240,6 +240,7 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         
         printVC.presentAnimated(true, completionHandler: nil)
     }//printRx
+    
     
     //***************************************************
     // Helper functions
@@ -287,7 +288,20 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         //UIGraphicsBeginPDFPage()
         
         //Using this gives you a small upper left print
-        UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, 792, 1122), nil)
+        //UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, 792, 1122), nil)
+        
+        //Centered 5.5 x 8.5 - image too big/rectangle too small
+        //UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, 396, 612), nil)
+
+        //5 x 7 - worse
+        //UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, 396, 504), nil)
+        
+        //6 x 11 - BINGO!
+        //UIGraphicsBeginPDFPageWithInfo(CGRectMake(-36, -72, 432, 792), nil)
+        
+        //Let's try makeing rectangle a bit bigger - this is even better
+        UIGraphicsBeginPDFPageWithInfo(CGRectMake(-54, -36, 504, 864), nil)
+
         //get the context
         let pdfContext = UIGraphicsGetCurrentContext()
         //draw rect to view and capture with context

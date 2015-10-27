@@ -12,6 +12,8 @@ import CoreData
 class AddFavoriteViewController: UIViewController, UITextFieldDelegate {
 
     //Variables
+    
+    //Is the keyboard up?
     var kbUp = false
     
     //Shorthand for the CoreData context
@@ -232,15 +234,15 @@ class AddFavoriteViewController: UIViewController, UITextFieldDelegate {
             //Pop an error and return
             TSClient.sharedInstance().errorDialog(self, errTitle: "PT Information Entry Incomplete", action: "OK", errMsg: "One or more PT practice fields are incomplete. Please ensure that all fields are completed")
         }else{
-            //Save the data for later Core Data storage
-            TSClient.sharedInstance().therapy.practiceName = PTName.text!
-            TSClient.sharedInstance().therapy.practiceAddress = "\(PTAddress.text!) \(PTCity.text!) \(PTState.text!) \(PTZip.text!)"
-            TSClient.sharedInstance().therapy.practicePhone = PTPhone.text!
-            
             //Is this entry already saved to favoirites?
             let duplicate = TSClient.sharedInstance().checkDuplicate()
             
             if !duplicate{
+                //Save the data for later Core Data storage
+                TSClient.sharedInstance().therapy.practiceName = PTName.text!
+                TSClient.sharedInstance().therapy.practiceAddress = "\(PTAddress.text!) \(PTCity.text!), \(PTState.text!) \(PTZip.text!)"
+                TSClient.sharedInstance().therapy.practicePhone = PTPhone.text!
+                
                 //We'll do the add ourselves here rather than in the confirmation dialog
                 //The user already has implicitly chosen to add it
                 TSClient.sharedInstance().addFavorite()
@@ -254,6 +256,9 @@ class AddFavoriteViewController: UIViewController, UITextFieldDelegate {
                 PTState.text = ""
                 PTZip.text = ""
                 PTPhone.text = ""
+                
+                //Because we're not selecting but just adding afavorite, clear out the therapy info so it won't display
+                TSClient.sharedInstance().therapy = TSClient.Therapy()
             }else{
                 //Show an error dialog to let the user know it's a duplicate
                 TSClient.sharedInstance().errorDialog(self, errTitle: "Duplicate Entry", action: "OK", errMsg: "This practice is already in the favorites list")

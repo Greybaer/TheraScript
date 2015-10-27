@@ -182,6 +182,23 @@ class TSClient: NSObject{
         }//completionhandler
     }//geocodeAddress
     
+    
+    //***************************************************
+    // CoreData Methods
+    //***************************************************
+    
+    //***************************************************
+    // fetchedRequestController
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        //Grab data from the practice database
+        let fetchRequest = NSFetchRequest(entityName: "PTPractice")
+        //Primary sort is name
+        let sort = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+        let fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
+        return fetchResultController
+        }()//fetchedResultController
+
     //***************************************************
     // Helper Functions
     //***************************************************
@@ -372,7 +389,6 @@ class TSClient: NSObject{
         //Make sure the data actually got to the right place...
         //println("Therapy Info: \(therapy.practiceName) \(therapy.practiceAddress) \(therapy.practicePhone)")
 
-        //Before we present, we check for an existing entry. If present, we go away without presenting the dialog
         //Create a dictionary of the new data
         let dictionary: [String : AnyObject] = [
             PTPractice.Keys.Name : self.therapy.practiceName as String,

@@ -36,7 +36,9 @@
             <color key="backgroundColor" red="0.62616914339999996" green="0.8146033654" blue="0.83402534969999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="Cbd-Bc-7Cw" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="UfJ-TU-O7w"/>
-                <constraint firstItem="Cbd-Bc-7Cw" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="uyt-g0-lf4"/>
+                <constraint firstItem="Cbd-Bc-7Cw" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="uyt-g0-lf4">
+                    <variation key="heightClass=regular" constant="22"/>
+                </constraint>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
