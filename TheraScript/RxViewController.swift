@@ -77,7 +77,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
         ptPhone.delegate = self
         
         //Load favorites if saved on disk
-        loadFavorites()
+        TSClient.sharedInstance().loadFavorites(self)
     }//viewDidLoad
 
     override func viewWillAppear(animated: Bool) {
@@ -386,12 +386,17 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
         }
     }//checkPatientData
 
+/* Moved to TSClient for re-use
     func loadFavorites(){
         //error object if fetch fails
         let error: NSErrorPointer = nil
         
         //build the fetchRequest
         let fetchRequest = NSFetchRequest(entityName: "PTPractice")
+        //Build the sort
+        let sort = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+        
         //If there are results, grab them. If not move on
 
         do {
@@ -406,6 +411,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
             error.memory = error1
         }//if let
     }//loadFavorites
+*/
         
 
 }//class

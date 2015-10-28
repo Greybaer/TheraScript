@@ -341,7 +341,35 @@ class TSClient: NSObject{
         }else{
             return false
         }
-   }//checkDuplicates
+    }//checkDuplicates
+    
+    //***************************************************
+    // Load the saved favorite PT practices
+    func loadFavorites(controller: UIViewController){
+        //error object if fetch fails
+        let error: NSErrorPointer = nil
+        
+        //build the fetchRequest
+        let fetchRequest = NSFetchRequest(entityName: "PTPractice")
+        //Build the sort
+        let sort = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+        
+        //If there are results, grab them. If not move on
+        
+        do {
+            let results = try sharedContext.executeFetchRequest(fetchRequest)
+            if error != nil{
+                //Nice alertview
+                TSClient.sharedInstance().errorDialog(controller, errTitle: "Favorites Load Error", action: "OK", errMsg: "Error loading favorites from disk")
+            }else{
+                TSClient.sharedInstance().practices = results as! [PTPractice]
+            }//if/else
+        } catch let error1 as NSError {
+            error.memory = error1
+        }//if let
+    }//loadFavorites
+
     
     //***************************************************
     // Save PT Practice info - used to add favorites outside of Rx generation

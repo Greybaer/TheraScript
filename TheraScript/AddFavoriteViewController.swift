@@ -232,18 +232,24 @@ class AddFavoriteViewController: UIViewController, UITextFieldDelegate {
             //Pop an error and return
             TSClient.sharedInstance().errorDialog(self, errTitle: "PT Information Entry Incomplete", action: "OK", errMsg: "One or more PT practice fields are incomplete. Please ensure that all fields are completed")
         }else{
-            //Save the data for later Core Data storage
-            TSClient.sharedInstance().therapy.practiceName = PTName.text!
-            TSClient.sharedInstance().therapy.practiceAddress = "\(PTAddress.text!) \(PTCity.text!) \(PTState.text!) \(PTZip.text!)"
-            TSClient.sharedInstance().therapy.practicePhone = PTPhone.text!
             
-            //Is this entry already saved to favoirites?
+            //Is this entry already saved to favorites?
             let duplicate = TSClient.sharedInstance().checkDuplicate()
             
             if !duplicate{
+                //Populate the data structure for Core Data storage
+                TSClient.sharedInstance().therapy.practiceName = PTName.text!
+                TSClient.sharedInstance().therapy.practiceAddress = "\(PTAddress.text!) \(PTCity.text!) \(PTState.text!) \(PTZip.text!)"
+                TSClient.sharedInstance().therapy.practicePhone = PTPhone.text!
+
                 //We'll do the add ourselves here rather than in the confirmation dialog
                 //The user already has implicitly chosen to add it
                 TSClient.sharedInstance().addFavorite()
+                
+                //And empty it out once saved, so we don't add it to the prescription
+                TSClient.sharedInstance().therapy.practiceName = ""
+                TSClient.sharedInstance().therapy.practiceAddress = ""
+                TSClient.sharedInstance().therapy.practicePhone = ""
                 
                 //We don't go away in order to allow multiple adds if desired,
                 //but clear the fields and display a success dialog

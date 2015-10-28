@@ -39,6 +39,10 @@ class PTFavoritesViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewWillAppear(animated: Bool) {
         //Hide the toolbar here
         self.navigationController?.toolbarHidden = true
+        
+        
+        //Reload the favorites to force a new sort in case something was added since we looked
+        TSClient.sharedInstance().loadFavorites(self)
         self.favoritesTable.reloadData()
 
    }

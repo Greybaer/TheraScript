@@ -18,6 +18,14 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
     @IBOutlet weak var searchTerm: UITextField!
     @IBOutlet weak var DxTableView: UITableView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
+    //The ICD code and description for selected diagnoses
+    @IBOutlet weak var code0: UILabel!
+    @IBOutlet weak var desc0: UILabel!
+    @IBOutlet weak var code1: UILabel!
+    @IBOutlet weak var desc1: UILabel!
+    @IBOutlet weak var code2: UILabel!
+    @IBOutlet weak var desc2: UILabel!
+    @IBOutlet weak var clearDxButton: UIButton!
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,11 +119,9 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         //Note that either the generic (tableview) or the specific (DxTableView) works
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
-        
-        //How many cells are already selected?
-        let selected = self.DxTableView.indexPathsForSelectedRows
-        //cap at three
-        if selected?.count > TSClient.Constants.diagnoses{
+        //No more than three total, so previously selected dxs count against this
+        print("Current diagnoses: \(TSClient.sharedInstance().dxList.count)")
+        if TSClient.sharedInstance().dxList.count > TSClient.Constants.diagnoses{
             //Let the user know what's up
             let dxTxt: String = "Diagnosis List is limited to " + String(TSClient.Constants.diagnoses + 1)
             TSClient.sharedInstance().errorDialog(self, errTitle: "Diagnosis List", action: "OK", errMsg: dxTxt)
@@ -131,20 +137,31 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         let cell = DxTableView.cellForRowAtIndexPath(indexPath)
         
         //Show the checkmark
-        cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+        //cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+        
+        let code = cell?.textLabel?.text as String!
+        let desc = cell?.detailTextLabel?.text as String!
+        let diagnosis: TSClient.Diagnosis = TSClient.Diagnosis(icdCode: code, description: desc)
+        TSClient.sharedInstance().dxList.append(diagnosis)
+ 
+        //Populate the diagnosis list
+        dxListPopulate()
+        
+        //deselect the cell
+        cell?.selected = false
         
         //Get the list of selections to this point
-        _ = tableView.indexPathsForSelectedRows
+        //_ = tableView.indexPathsForSelectedRows
     }//didSelectRow
 
 
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         //Get the selected cell
-        let cell = DxTableView.cellForRowAtIndexPath(indexPath)
+        //let cell = DxTableView.cellForRowAtIndexPath(indexPath)
 
         //Remove the check
-        cell!.accessoryType = UITableViewCellAccessoryType.None
-        let selected = tableView.indexPathsForSelectedRows
+        //cell!.accessoryType = UITableViewCellAccessoryType.None
+        //let selected = tableView.indexPathsForSelectedRows
     }//didDeselect
     
     //***************************************************
@@ -152,26 +169,44 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
     //***************************************************
 
     //***************************************************
-    // saveDx - save the diagnosis list
+    // saveDx - The list is now saved in the delegate, so we're just returning here
     func saveDx() {
-        //println("Accept pressed")
-        //Let's zero out the stored date as the user may have come back to change things. Pressing Accept means a do-over.
-        TSClient.sharedInstance().dxList = []
-        //iterate the selection list and pull the code and description, and save it
-        let paths = DxTableView.indexPathsForSelectedRows
-        //Check to see somethign was selected to avoid nil crash
-        if paths != nil{
-            for var i = 0; i < paths!.count; ++i{
-                let path = (paths! as [NSIndexPath!])[i]
-                let cell = DxTableView.cellForRowAtIndexPath(path)
-                let code = cell?.textLabel?.text as String!
-                let desc = cell?.detailTextLabel?.text as String!
-                let diagnosis: TSClient.Diagnosis = TSClient.Diagnosis(icdCode: code, description: desc)
-                TSClient.sharedInstance().dxList.append(diagnosis)
-            }//for
-        }//if paths
         self.navigationController?.popToRootViewControllerAnimated(true)
         //self.dismissViewControllerAnimated(true, completion: nil)
     }//saveDx
+
+    @IBAction func clearDx(sender: UIButton) {
+        //Clear out all the fields and the dxList
+        TSClient.sharedInstance().dxList = []
+        code0.text = ""
+        code1.text = ""
+        code2.text = ""
+        desc0.text = ""
+        desc1.text = ""
+        desc2.text = ""
+    }//clearDx
+    
+    //***************************************************
+    //Helper functions
+    //***************************************************
+    
+    //***************************************************
+    // populate the diagnosis list
+    func dxListPopulate() {
+        //Stuff the values in
+        switch TSClient.sharedInstance().dxList.count{
+        case 1:
+            code0.text = TSClient.sharedInstance().dxList[0].icdCode
+            desc0.text = TSClient.sharedInstance().dxList[0].description
+        case 2:
+            code1.text = TSClient.sharedInstance().dxList[1].icdCode
+            desc1.text = TSClient.sharedInstance().dxList[1].description
+        case 3:
+            code2.text = TSClient.sharedInstance().dxList[2].icdCode
+            desc2.text = TSClient.sharedInstance().dxList[2].description
+        default:
+            break
+        }//switch
+    }//dxListPopulate
     
 }//class

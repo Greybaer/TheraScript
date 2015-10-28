@@ -147,7 +147,7 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
             zipCode.becomeFirstResponder()
         case zipCode:
             zipCode.resignFirstResponder()
-            firstName.becomeFirstResponder()
+            //firstName.becomeFirstResponder()
         default:
             firstName.becomeFirstResponder()
         }//switch
