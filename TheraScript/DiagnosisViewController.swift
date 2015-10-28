@@ -32,8 +32,8 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         
         self.spinner.hidesWhenStopped = true
         
-        //Set the selector to ICD9 to start
-        icdSelector.selectedSegmentIndex = 0
+        //Set the selector to ICD10 to start now that it's live
+        icdSelector.selectedSegmentIndex = 1
         //Handle our own text
         searchTerm.delegate = self
         DxTableView.delegate = self
@@ -53,7 +53,9 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         
         //Hide the toolbar here
         self.navigationController?.toolbarHidden = true
-
+        
+        //Populate the diagnosis list if there is one
+        dxListPopulate()
     }//viewWillAppear
 
     //***************************************************
@@ -199,9 +201,15 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
             code0.text = TSClient.sharedInstance().dxList[0].icdCode
             desc0.text = TSClient.sharedInstance().dxList[0].description
         case 2:
+            code0.text = TSClient.sharedInstance().dxList[0].icdCode
+            desc0.text = TSClient.sharedInstance().dxList[0].description
             code1.text = TSClient.sharedInstance().dxList[1].icdCode
             desc1.text = TSClient.sharedInstance().dxList[1].description
         case 3:
+            code0.text = TSClient.sharedInstance().dxList[0].icdCode
+            desc0.text = TSClient.sharedInstance().dxList[0].description
+            code1.text = TSClient.sharedInstance().dxList[1].icdCode
+            desc1.text = TSClient.sharedInstance().dxList[1].description
             code2.text = TSClient.sharedInstance().dxList[2].icdCode
             desc2.text = TSClient.sharedInstance().dxList[2].description
         default:

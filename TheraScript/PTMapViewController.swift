@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class PTMapViewController: UIViewController, MKMapViewDelegate {
+class PTMapViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate {
     
     //Variables
     
@@ -25,6 +25,9 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var PTMapView: MKMapView!
     //Activity Indicator
     @IBOutlet weak var spinner: UIActivityIndicatorView!
+    //Search box items
+    @IBOutlet weak var addressSearchbox: UITextField!
+    @IBOutlet weak var searchButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +35,14 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
         self.spinner.hidesWhenStopped = true
         //We're our own delegate
         PTMapView.delegate = self
+        addressSearchbox.delegate = self
+        
+        //Assemble the search address
+        let ptAddress = "\(TSClient.sharedInstance().patient.Address) \(TSClient.sharedInstance().patient.Zip)"
+        //Stuff it in the search box
+        addressSearchbox.text = ptAddress
         //Set up the map region
-        mapSetup()
+        mapSetup(ptAddress)
 
     }//viewDidLoad
     
@@ -50,9 +59,17 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
     }//viewWillAppear
     
     //***************************************************
+    // Text delegate Functions
+    //***************************************************
+
+    //When the user hits return, grab the entry and do a search
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        searchAddress()
+        return false
+    }
+    //***************************************************
     // Map delegate Functions
     //***************************************************
-    
     
     //***************************************************
     // Re-use method for displaying pins -
@@ -115,7 +132,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
     
     func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {
         //Perform the search for nearby Therapy Practices
-        doTherapySearch()
+        doTherapySearch(TSClient.sharedInstance().patient.Zip)
     }//mapDidFinishRender
 
     //***************************************************
@@ -123,10 +140,38 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
     //***************************************************
 
     //***************************************************
+    // Clear the map, reset the region and do a new search from the search address text
+    func searchAddress(){
+        let searchAddress = addressSearchbox.text
+        //clear the annotations from the map
+        PTMapView.removeAnnotations(self.annotations)
+        //Now reset the array for the new search
+        self.annotations = [MKPointAnnotation]()
+        //Parse the search field for the zip code
+        let zip = parseAddress()
+        //Set up the map
+        mapSetup(searchAddress!)
+        //Do a new search
+        doTherapySearch(zip)
+    }//searchAddress
+    
+    //***************************************************
+    // parse the search string for the zip code
+    func parseAddress() -> String{
+        //Check the string length - if it may be a zip only search
+        if addressSearchbox.text?.characters.count == 5{
+            return addressSearchbox.text!
+        }else{
+            //Peel off the last 5 chars which should be the zip
+            let startIndex = addressSearchbox.text!.endIndex.advancedBy(-5)
+            let zip = addressSearchbox.text?.substringFromIndex(startIndex)
+            return zip!
+        }
+    }//parseAddress
+    
+    //***************************************************
     // Set up the Therapy Search map with the pins we need
-    func mapSetup(){
-        //Address
-        let address = "\(TSClient.sharedInstance().patient.Address),\(TSClient.sharedInstance().patient.Zip)"
+    func mapSetup(address: String){
         dispatch_async(dispatch_get_main_queue()){
             //Start the spinner
             self.spinner.startAnimating()
@@ -160,7 +205,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
     //***************************************************
     // Perform a local search for therapy practices
     // Lives here because of its tight integration into the map
-        func doTherapySearch(){
+    func doTherapySearch(zipCode: String){
             dispatch_async(dispatch_get_main_queue()){
                 //Start the spinner
                 self.spinner.startAnimating()
@@ -169,7 +214,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate {
             //Build the request
             let request = MKLocalSearchRequest()
             //Adding the zip really makes this work right
-            request.naturalLanguageQuery = "Physical Therapy \(TSClient.sharedInstance().patient.Zip)"
+            request.naturalLanguageQuery = "Physical Therapy \(zipCode)"
             request.region = self.PTMapView.region
             //Execute the search
             let search = MKLocalSearch(request: request)
