@@ -27,6 +27,8 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
     @IBOutlet weak var desc2: UILabel!
     @IBOutlet weak var clearDxButton: UIButton!
    
+    @IBOutlet weak var searchButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,44 +65,7 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
     //***************************************************
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        dispatch_async(dispatch_get_main_queue()){
-            //Textfield resigns focus to hide the keyboard
-            self.searchTerm.resignFirstResponder()
-            
-            //Start the spinner
-            self.spinner.startAnimating()
-        }//main queue
-
-        //Which ICD code set are we searching?
-        let codeType = self.icdSelector.selectedSegmentIndex
-        
-        //Get a token
-        TSClient.sharedInstance().getAquaToken(){(success,errorString) in
-            if !success{
-                TSClient.sharedInstance().errorDialog(self, errTitle: "Connection Error", action: "OK", errMsg: errorString!)
-            }else{
-                //println("Token: \(TSClient.sharedInstance().aqua.token)")
-                let token = TSClient.sharedInstance().aqua.token                //Do a search using the textfield entry using the token
-                TSClient.sharedInstance().getDx(codeType, searchTerm: textField.text!, token: token){(success,errorString) in
-                    if !success{
-                        dispatch_async(dispatch_get_main_queue()){
-                        TSClient.sharedInstance().errorDialog(self, errTitle: "Search Result", action: "OK", errMsg: errorString!)
-                        }//queue
-                    }else{
-                        //populate the table
-                        //println("Cells to display: \(TSClient.sharedInstance().aqua.searchResults.count)")
-                        dispatch_async(dispatch_get_main_queue()){
-                            self.DxTableView.reloadData()
-                        }
-                    }
-                }//getDx
-            }//else
-            dispatch_async(dispatch_get_main_queue()){
-                //Start the spinner
-                self.spinner.stopAnimating()
-            }//main queue
-
-        }//getAquaToken
+        doSearch(textField.text!)
         return false
     }//textFieldShouldReturn
     
@@ -177,6 +142,8 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
         //self.dismissViewControllerAnimated(true, completion: nil)
     }//saveDx
 
+    //***************************************************
+    // Clear the diagnosis list
     @IBAction func clearDx(sender: UIButton) {
         //Clear out all the fields and the dxList
         TSClient.sharedInstance().dxList = []
@@ -189,13 +156,64 @@ class DiagnosisViewController: UIViewController, UITextFieldDelegate, UITableVie
     }//clearDx
     
     //***************************************************
+    //Search button pressed
+    @IBAction func searchButtonPressed(sender: UIButton) {
+        doSearch(self.searchTerm.text!)
+    }//searchButtonPressed
+    
+    //***************************************************
     //Helper functions
     //***************************************************
+    
+    //***************************************************
+    //Do the search
+    func doSearch(term: String) {
+        dispatch_async(dispatch_get_main_queue()){
+            //Textfield resigns focus to hide the keyboard
+            self.searchTerm.resignFirstResponder()
+            
+            //Start the spinner
+            self.spinner.startAnimating()
+        }//main queue
+        
+        //Which ICD code set are we searching?
+        let codeType = self.icdSelector.selectedSegmentIndex
+        
+        //Get a token
+        TSClient.sharedInstance().getAquaToken(){(success,errorString) in
+            if !success{
+                TSClient.sharedInstance().errorDialog(self, errTitle: "Connection Error", action: "OK", errMsg: errorString!)
+            }else{
+                //println("Token: \(TSClient.sharedInstance().aqua.token)")
+                let token = TSClient.sharedInstance().aqua.token                //Do a search using the textfield entry using the token
+                TSClient.sharedInstance().getDx(codeType, searchTerm: term, token: token){(success,errorString) in
+                    if !success{
+                        dispatch_async(dispatch_get_main_queue()){
+                            TSClient.sharedInstance().errorDialog(self, errTitle: "Search Result", action: "OK", errMsg: errorString!)
+                        }//queue
+                    }else{
+                        //populate the table
+                        //println("Cells to display: \(TSClient.sharedInstance().aqua.searchResults.count)")
+                        dispatch_async(dispatch_get_main_queue()){
+                            self.DxTableView.reloadData()
+                        }
+                    }
+                }//getDx
+            }//else
+            dispatch_async(dispatch_get_main_queue()){
+                //Start the spinner
+                self.spinner.stopAnimating()
+            }//main queue
+            
+        }//getAquaToken
+
+    }//doSearch
     
     //***************************************************
     // populate the diagnosis list
     func dxListPopulate() {
         //Stuff the values in
+        //Need to think of a more elegant solution
         switch TSClient.sharedInstance().dxList.count{
         case 1:
             code0.text = TSClient.sharedInstance().dxList[0].icdCode

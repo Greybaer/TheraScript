@@ -84,7 +84,7 @@ class PTMapViewController: UIViewController, MKMapViewDelegate, UITextFieldDeleg
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true
-            pinView!.pinColor = .Green
+                pinView!.pinTintColor = UIColor.greenColor()
             //Create a custom UIButton for the callout
             //Custom image - selected and unselected varieties
             let imageUnselected = UIImage(named: "OK.png") as UIImage!
@@ -134,6 +134,15 @@ class PTMapViewController: UIViewController, MKMapViewDelegate, UITextFieldDeleg
         //Perform the search for nearby Therapy Practices
         doTherapySearch(TSClient.sharedInstance().patient.Zip)
     }//mapDidFinishRender
+    //***************************************************
+    // Action Functions
+    //***************************************************
+
+    //***************************************************
+    // SearchButton pressed
+    @IBAction func searchButtonPressed(sender: UIButton) {
+        searchAddress()
+    }
 
     //***************************************************
     // Helper Functions
@@ -248,6 +257,8 @@ class PTMapViewController: UIViewController, MKMapViewDelegate, UITextFieldDeleg
             //Stop the spinner
         }//doTherapySearch
     
+    //***************************************************
+    // Format field input to a phone number
     func formatPhone(var number: String) -> String {
         //The new format of the phone is a unicode string with garbage in front and the other chars already inserted.
         //Now all we need to do is strip that out and add the 1

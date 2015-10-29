@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A81A26461B680C35004B6F25 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81A26451B680C35004B6F25 /* ImageCache.swift */; };
-		A81EB9A31BCD6DD400B06349 /* AddFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81EB9A21BCD6DD400B06349 /* AddFavoriteViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		A82D22F51BD008A200FB1EF4 /* ManageFavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82D22F41BD008A200FB1EF4 /* ManageFavoritesTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		A81EB9A31BCD6DD400B06349 /* AddFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81EB9A21BCD6DD400B06349 /* AddFavoriteViewController.swift */; };
+		A82D22F51BD008A200FB1EF4 /* ManageFavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82D22F41BD008A200FB1EF4 /* ManageFavoritesTableViewController.swift */; };
 		A84526991B837CDB00515D70 /* DiagnosisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84526981B837CDB00515D70 /* DiagnosisViewController.swift */; };
 		A84AC50E1B5D751700AEBEE1 /* IconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84AC50D1B5D751700AEBEE1 /* IconViewController.swift */; };
 		A8719FB11B61418B00913FCD /* RxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8719FB01B61418B00913FCD /* RxViewController.swift */; };
@@ -422,6 +422,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = TheraScript/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.infiniteloop-slc.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -436,6 +437,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = TheraScript/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.infiniteloop-slc.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

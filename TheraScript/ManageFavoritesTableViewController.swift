@@ -24,16 +24,6 @@ class ManageFavoritesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        //Display an add and a remove button
-        //let addButton = UIBarButtonItem(image: UIImage(named: "add"), style: UIBarButtonItemStyle.Plain, target: self, action: "addFavorite")
-        //UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addFavorite")
-        //let removeButton = UIBarButtonItem(image: UIImage(named: "remove"), style: UIBarButtonItemStyle.Plain, target: self, action: "editFavorites")
-        //UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Stop, target: self, action: "editFavorites")
-        //self.navigationController?.
-        // navigationItem.setRightBarButtonItems([addButton, removeButton], animated: true)
-        
-        
         //We're our own delegate
         favoritesTable.delegate = self
         favoritesTable.dataSource = self
@@ -43,6 +33,11 @@ class ManageFavoritesTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         //Hide the toolbar here
         self.navigationController?.toolbarHidden = false
+        
+        //If there are no favorites, disable the Remove key
+        if TSClient.sharedInstance().practices.count < 1{
+            self.removeButton.enabled = false
+        }
         
         //Reload the favorites to force a new sort in case something was added since we looked
         TSClient.sharedInstance().loadFavorites(self)
@@ -69,25 +64,6 @@ class ManageFavoritesTableViewController: UITableViewController {
         
         return cell
     }//cellForRow
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-       
-        //Selecting an entry should probably let you edit it
-/*
-        //println("Selected cell")
-        
-        //Get the practice info for the row chosen
-        let practice = TSClient.sharedInstance().practices[indexPath.row]
-        
-        //Grab the data for display. It's already saved, so no dialog and no Core Data save
-        TSClient.sharedInstance().therapy.practiceName = practice.name
-        TSClient.sharedInstance().therapy.practiceAddress = practice.address
-        TSClient.sharedInstance().therapy.practicePhone = practice.phone
-        
-        //And pop back to the RX controller
-        self.navigationController?.popToRootViewControllerAnimated(true)
-*/
-    }//didSelect
     
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {

@@ -24,11 +24,15 @@ class PTFavoritesViewController: UIViewController, UITableViewDataSource, UITabl
         //Add a completion button to the nav bar
         //Has to be done here because tabs don't reload on navigation between views
         
-        let editButton = UIBarButtonItem(title: "Remove", style: UIBarButtonItemStyle.Plain, target: self, action: "editFavorites")
-        self.tabBarController!.navigationItem.rightBarButtonItem = editButton
+        //Removed delete function because we have a dedicated view for this now
+        //let editButton = UIBarButtonItem(title: "Remove", style: UIBarButtonItemStyle.Plain, target: self, action: "editFavorites")
+        //self.tabBarController!.navigationItem.rightBarButtonItem = editButton
         
         //Set the title of the view
         self.tabBarController!.navigationItem.title = "Favorite Practices"
+        
+        //No Accept button here please
+        self.tabBarController!.navigationItem.rightBarButtonItem = nil
         
         //We're our own delegate
         favoritesTable.delegate = self

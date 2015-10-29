@@ -120,7 +120,10 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
             }//for
             //Display the result
             self.diagnosis.text = dxText
-        }//if
+        }else{
+            //Clear the diagnosis list if empty
+            self.ptDiagnosis.detailTextLabel?.text = "None Selected"
+        }//if/else
         
         //Check therapy struct, if there is data use the practice name to fill in the field
         if !TSClient.sharedInstance().therapy.practiceName.isEmpty{

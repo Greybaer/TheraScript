@@ -12,7 +12,7 @@ import CoreData
 class AddFavoriteViewController: UIViewController, UITextFieldDelegate {
 
     //Variables
-    var kbUp = false
+    //var kbUp = false
     
     //Shorthand for the CoreData context
     var sharedContext: NSManagedObjectContext {
@@ -49,10 +49,10 @@ class AddFavoriteViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.toolbarHidden = true
         
         // Sign up for Keyboard notifications
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         //KB Hide Notification
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillDisappear:", name: UIKeyboardWillHideNotification,
-            object: nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillDisappear:", name: UIKeyboardWillHideNotification,
+        //    object: nil)
         
     }//viewWillAppear
     
@@ -60,14 +60,15 @@ class AddFavoriteViewController: UIViewController, UITextFieldDelegate {
         super.viewWillDisappear(animated)
         
         //Remove us from keyboard notifications
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillShow:", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillDisappear:", object: nil)
+        //NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillShow:", object: nil)
+        //NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillDisappear:", object: nil)
     }//viewWillDisappear
 
     //***************************************************
     // Delegate Functions
     //***************************************************
-    
+
+/*
     //Slide the picture up to show bottom textfields when the keyboard slides in
     func keyboardWillShow(notification: NSNotification){
         //Getting multiple notifications, so we'll add a test to make sure we only respond to the first one
@@ -89,7 +90,7 @@ class AddFavoriteViewController: UIViewController, UITextFieldDelegate {
             //println("Sliding Frame down: \(self.view.frame.origin.y)")
         }
     }//keyboardWillDisappear
-    
+*/
     //***************************************************
     // Handle returns by shifting focus
     func textFieldShouldReturn(textField: UITextField) -> Bool {
