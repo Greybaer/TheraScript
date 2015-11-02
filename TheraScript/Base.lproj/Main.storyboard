@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BUT-Sb-YOB">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -1259,9 +1258,6 @@
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <animations/>
                                 <state key="normal" image="searchhollow"/>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="323" y="67" width="26" height="26"/>
-                                </variation>
                                 <connections>
                                     <action selector="searchButtonPressed:" destination="ZlT-5K-jBF" eventType="touchUpInside" id="rOv-d5-3cw"/>
                                 </connections>
@@ -2400,7 +2396,7 @@
                                 <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -2437,24 +2433,24 @@
                                 <exclude reference="dGD-mp-6bZ"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Taj-i4-SUv"/>
-                                <exclude reference="U3B-s7-E3O"/>
-                                <exclude reference="4yd-XB-g3W"/>
-                                <exclude reference="ExM-FM-jHT"/>
-                                <exclude reference="TI6-0v-IU9"/>
-                                <exclude reference="iTU-4Y-9BQ"/>
-                                <exclude reference="YYJ-NA-lFC"/>
-                                <exclude reference="3vv-xA-asr"/>
-                                <exclude reference="Fbm-93-uQS"/>
-                                <exclude reference="npB-Jf-0eA"/>
-                                <exclude reference="rs6-Lw-7yC"/>
-                                <exclude reference="dNE-s5-85P"/>
                                 <exclude reference="CiB-FK-l7k"/>
                                 <exclude reference="R0R-g6-n91"/>
                                 <exclude reference="Xak-hx-oMI"/>
                                 <exclude reference="gMz-7F-Vc7"/>
                                 <exclude reference="sWy-Sc-ffO"/>
                                 <exclude reference="suK-IQ-WSO"/>
+                                <exclude reference="dNE-s5-85P"/>
+                                <exclude reference="4yd-XB-g3W"/>
+                                <exclude reference="ExM-FM-jHT"/>
+                                <exclude reference="TI6-0v-IU9"/>
+                                <exclude reference="iTU-4Y-9BQ"/>
+                                <exclude reference="Fbm-93-uQS"/>
+                                <exclude reference="npB-Jf-0eA"/>
+                                <exclude reference="rs6-Lw-7yC"/>
+                                <exclude reference="YYJ-NA-lFC"/>
+                                <exclude reference="3vv-xA-asr"/>
+                                <exclude reference="Taj-i4-SUv"/>
+                                <exclude reference="U3B-s7-E3O"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -2468,24 +2464,24 @@
                                 <include reference="dGD-mp-6bZ"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Taj-i4-SUv"/>
-                                <include reference="U3B-s7-E3O"/>
-                                <include reference="4yd-XB-g3W"/>
-                                <include reference="ExM-FM-jHT"/>
-                                <include reference="TI6-0v-IU9"/>
-                                <include reference="iTU-4Y-9BQ"/>
-                                <include reference="YYJ-NA-lFC"/>
-                                <include reference="3vv-xA-asr"/>
-                                <include reference="Fbm-93-uQS"/>
-                                <include reference="npB-Jf-0eA"/>
-                                <include reference="rs6-Lw-7yC"/>
-                                <include reference="dNE-s5-85P"/>
                                 <include reference="CiB-FK-l7k"/>
                                 <include reference="R0R-g6-n91"/>
                                 <include reference="Xak-hx-oMI"/>
                                 <include reference="gMz-7F-Vc7"/>
                                 <include reference="sWy-Sc-ffO"/>
                                 <include reference="suK-IQ-WSO"/>
+                                <include reference="dNE-s5-85P"/>
+                                <include reference="4yd-XB-g3W"/>
+                                <include reference="ExM-FM-jHT"/>
+                                <include reference="TI6-0v-IU9"/>
+                                <include reference="iTU-4Y-9BQ"/>
+                                <include reference="Fbm-93-uQS"/>
+                                <include reference="npB-Jf-0eA"/>
+                                <include reference="rs6-Lw-7yC"/>
+                                <include reference="YYJ-NA-lFC"/>
+                                <include reference="3vv-xA-asr"/>
+                                <include reference="Taj-i4-SUv"/>
+                                <include reference="U3B-s7-E3O"/>
                             </mask>
                         </variation>
                     </view>
@@ -2540,9 +2536,6 @@
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <animations/>
                                 <state key="normal" image="searchhollow"/>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="349" y="65" width="30" height="28"/>
-                                </variation>
                                 <connections>
                                     <action selector="searchButtonPressed:" destination="Jms-ah-Vq1" eventType="touchUpInside" id="Vup-5v-gFl"/>
                                 </connections>
@@ -3700,6 +3693,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Xf7-9r-nAJ">
+                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                     </toolbar>
