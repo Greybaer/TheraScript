@@ -206,13 +206,13 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         
         //create a message controller object
         let messageVC = MFMessageComposeViewController()
-        messageVC.body = TSClient.Constants.PTMessage + TSClient.sharedInstance().patient.Name
+        messageVC.subject = TSClient.Constants.PTMessage + TSClient.sharedInstance().patient.Name
         //Create an NSData object from the view
         let attachment = dataFromView()
         //And attach it to the message
         messageVC.addAttachmentData(attachment, typeIdentifier: "images/png", filename: "PTRx.jpg")
-        //We default to sending to the therapist and the patient
-        messageVC.recipients = [TSClient.sharedInstance().therapy.practicePhone, TSClient.sharedInstance().patient.Phone]
+        //We default to sending to the patient.
+        messageVC.recipients = [TSClient.sharedInstance().patient.Phone]
         //Handle things ourselves
         messageVC.messageComposeDelegate = self
         //Present a modal view to complete the process
