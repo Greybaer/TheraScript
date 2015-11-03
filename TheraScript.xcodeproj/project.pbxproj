@@ -114,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				A8DA468F1B559D8900FFC950 /* AppDelegate.swift */,
+				A81EB9A21BCD6DD400B06349 /* AddFavoriteViewController.swift */,
 				A88E56371B5FDB9400170159 /* CoreDataStack.swift */,
 				A84526981B837CDB00515D70 /* DiagnosisViewController.swift */,
 				A8DDC6D21BB1E42800550E1B /* GeneratorViewController.swift */,
@@ -122,7 +123,6 @@
 				A8DA46941B559D8900FFC950 /* InfoViewController.swift */,
 				A82D22F41BD008A200FB1EF4 /* ManageFavoritesTableViewController.swift */,
 				A8E800641B94FE9200C0E5A1 /* ManualPTViewController.swift */,
-				A81EB9A21BCD6DD400B06349 /* AddFavoriteViewController.swift */,
 				A874DFD61B960D9700C16A6C /* PTFavoritesViewController.swift */,
 				A883FCC81B8B7580002D273A /* PTMapViewController.swift */,
 				A8B4AE8D1BB42B000049EA0D /* PTPractice.swift */,

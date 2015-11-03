@@ -2416,7 +2416,9 @@
                             <constraint firstItem="vu7-ci-0gJ" firstAttribute="top" secondItem="dBY-X5-kFl" secondAttribute="bottom" constant="25" id="YYJ-NA-lFC"/>
                             <constraint firstItem="PRI-cS-GD9" firstAttribute="leading" secondItem="w3W-tB-hL9" secondAttribute="trailing" constant="8" symbolic="YES" id="dNE-s5-85P"/>
                             <constraint firstItem="791-MY-fyE" firstAttribute="trailing" secondItem="dBY-X5-kFl" secondAttribute="trailing" id="gMz-7F-Vc7"/>
-                            <constraint firstItem="dBY-X5-kFl" firstAttribute="top" secondItem="EMZ-nu-20U" secondAttribute="top" constant="233" id="iTU-4Y-9BQ"/>
+                            <constraint firstItem="dBY-X5-kFl" firstAttribute="top" secondItem="EMZ-nu-20U" secondAttribute="top" constant="233" id="iTU-4Y-9BQ">
+                                <variation key="heightClass=regular-widthClass=compact" constant="176"/>
+                            </constraint>
                             <constraint firstItem="kbN-FG-Z0G" firstAttribute="top" secondItem="w3W-tB-hL9" secondAttribute="bottom" constant="22" id="npB-Jf-0eA"/>
                             <constraint firstItem="kbN-FG-Z0G" firstAttribute="leading" secondItem="dBY-X5-kFl" secondAttribute="leading" id="rs6-Lw-7yC"/>
                             <constraint firstItem="791-MY-fyE" firstAttribute="baseline" secondItem="PRI-cS-GD9" secondAttribute="baseline" id="sWy-Sc-ffO"/>
@@ -2734,7 +2736,9 @@
                             <constraint firstItem="sQP-lN-xUq" firstAttribute="top" secondItem="w2V-kJ-vfc" secondAttribute="bottom" constant="26" id="Rrm-pt-EJe"/>
                             <constraint firstItem="UOV-Tx-Gq7" firstAttribute="leading" secondItem="sQP-lN-xUq" secondAttribute="leading" id="S2J-My-tPk"/>
                             <constraint firstItem="UOV-Tx-Gq7" firstAttribute="trailing" secondItem="sQP-lN-xUq" secondAttribute="trailing" id="Vsf-Q6-Yb4"/>
-                            <constraint firstItem="w2V-kJ-vfc" firstAttribute="top" secondItem="VD2-1g-E5N" secondAttribute="bottom" constant="160" id="XQ1-N2-OSE"/>
+                            <constraint firstItem="w2V-kJ-vfc" firstAttribute="top" secondItem="VD2-1g-E5N" secondAttribute="bottom" constant="160" id="XQ1-N2-OSE">
+                                <variation key="heightClass=regular-widthClass=compact" constant="98"/>
+                            </constraint>
                             <constraint firstItem="sQP-lN-xUq" firstAttribute="leading" secondItem="P4n-03-0uH" secondAttribute="leadingMargin" id="alE-OY-EJX"/>
                             <constraint firstItem="aS4-bN-V9t" firstAttribute="trailing" secondItem="UOV-Tx-Gq7" secondAttribute="trailing" id="fVr-ab-fuc"/>
                             <constraint firstItem="aS4-bN-V9t" firstAttribute="baseline" secondItem="L0H-fE-5f0" secondAttribute="baseline" id="gkH-rP-wFe"/>
