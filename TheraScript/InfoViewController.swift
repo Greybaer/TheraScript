@@ -52,14 +52,16 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
         zipCode.delegate = self //zipTextDelegate
         self.navigationController?.toolbarHidden = true
     }//viewDidLoad
-    
+
+
     override func viewWillAppear(animated: Bool) {
+        /* Not needed for iPad version
         // Sign up for Keyboard notifications
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         //KB Hide Notification
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillDisappear:", name: UIKeyboardWillHideNotification,
             object: nil)
-        
+        */
         //Are we in data entry or edit mode? Check the provider data to see
         if !(provider.firstName.isEmpty){
             //We're in edit mode, populate those fields
@@ -78,17 +80,20 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
+        /* Not needed for iPad version
         //Remove us from keyboard notifications
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillShow:", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "keyboardWillDisappear:", object: nil)
+        */
     }//viewWillDisappear
 
     
     //***************************************************
     // Delegate Functions
     //***************************************************
-    
+
+    /* Not needed for iPad version
+
     //Slide the picture up to show bottom textfields when the keyboard slides in
     func keyboardWillShow(notification: NSNotification){
         //Getting multiple notifications, so we'll add a test to make sure we only respond to the first one
@@ -112,7 +117,8 @@ class InfoViewController: UIViewController, UITextFieldDelegate {
             //println("Sliding Frame down: \(self.view.frame.origin.y)")
         }
     }//keyboardWillDisappear
-    
+    */
+
     
     //***************************************************
     // Handle the return key, iterating through the fields like a tab key
