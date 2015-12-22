@@ -9,7 +9,7 @@
 import UIKit
 import MessageUI
 
-class GeneratorViewController: UIViewController, MFMessageComposeViewControllerDelegate {
+class GeneratorViewController: UIViewController, MFMessageComposeViewControllerDelegate, UIPrintInteractionControllerDelegate{
     
     //Variables
     //Provider data struct
@@ -144,7 +144,7 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
             
             //Populate the diagnosis list
             for diagnosis in TSClient.sharedInstance().dxList{
-                diagnosisList.text = diagnosisList.text! + diagnosis.icdCode + " "
+                diagnosisList.text? = diagnosisList.text! + diagnosis.icdCode + " - " + diagnosis.description + "\n"
             }
             
             //Populate the prescription
@@ -172,7 +172,6 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
     //***************************************************
     // Delegate functions
     //***************************************************
-
     //***************************************************
     //Determines whether device is SMS enabled
     class func canSendText() -> Bool{
@@ -228,6 +227,9 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
               
         //create the controller
         let printVC = UIPrintInteractionController.sharedPrintController()
+        
+        //Select paper size enable
+        printVC.showsPaperSelectionForLoadedPapers = true
 
         //Landscape? Nope
         let printInfo = UIPrintInfo(dictionary: nil)
@@ -281,14 +283,18 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         
         //Point the pdf convertor to the data object and the view
         UIGraphicsBeginPDFContextToData(pdfData, self.view.bounds, nil)
+        
+
         //Begin the page
         
         //Using this gives you a large centered print
         //UIGraphicsBeginPDFPage()
         
+        //iPhone page formats
+        //---------------------
         //Using this gives you a small upper left print
         //UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, 792, 1122), nil)
-        
+       
         //Centered 5.5 x 8.5 - image too big/rectangle too small
         //UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, 396, 612), nil)
         
@@ -299,7 +305,15 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         //UIGraphicsBeginPDFPageWithInfo(CGRectMake(-36, -72, 432, 792), nil)
         
         //Let's try makeing rectangle a bit bigger - this is even better
-        UIGraphicsBeginPDFPageWithInfo(CGRectMake(-54, -36, 504, 864), nil)
+        //UIGraphicsBeginPDFPageWithInfo(CGRectMake(-54, -36, 504, 864), nil)
+        
+        //UIGraphicsBeginPDFPageWithInfo(CGRectMake(-78, -60, 576, 936), nil)
+        
+        
+        //iPad page formats
+        //-----------------
+        
+        UIGraphicsBeginPDFPageWithInfo(CGRectMake(72, -72, 576, 936), nil)
         
         //get the context
         let pdfContext = UIGraphicsGetCurrentContext()
