@@ -313,7 +313,14 @@ class GeneratorViewController: UIViewController, MFMessageComposeViewControllerD
         //iPad page formats
         //-----------------
         
-        UIGraphicsBeginPDFPageWithInfo(CGRectMake(72, -72, 576, 936), nil)
+        //UIGraphicsBeginPDFPageWithInfo(CGRectMake(72, -72, 576, 936), nil)
+        
+        //Half Letter size
+        //UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, -72, 792, 1122), nil)
+        
+        //Quarter letter?
+        //This is the best fit for half letter
+        UIGraphicsBeginPDFPageWithInfo(CGRectMake(-162, 0, 1088, 1625), nil)
         
         //get the context
         let pdfContext = UIGraphicsGetCurrentContext()
