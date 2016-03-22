@@ -50,7 +50,8 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var therapyRx: UITableViewCell!
     
     //The prescriptions labels
-    @IBOutlet weak var diagnosis: UILabel!
+    //@IBOutlet weak var diagnosis: UILabel!
+    @IBOutlet weak var diagnosis: UITextView!
     @IBOutlet weak var therapist: UILabel!
     @IBOutlet weak var prescription: UILabel!
     
@@ -70,6 +71,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
         //We're our own textfield delegate
         ptName.delegate = self
         ptAddress.delegate = self
@@ -111,18 +113,22 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
         therapyLocation.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         therapyRx.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         //deliveryMethod.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-               
+        
+        //Set the diagnosis alignment to display top/left
+        //self.diagnosis.sizeToFit()
         //Check the diagnosis list and display them if present
         if TSClient.sharedInstance().dxList.count > 0{
             var dxText: String = ""
             for var i = 0; i < TSClient.sharedInstance().dxList.count; ++i{
-                dxText = dxText + TSClient.sharedInstance().dxList[i].icdCode + "  "
+                dxText = dxText + "\(i + 1): " + TSClient.sharedInstance().dxList[i].icdCode + "\n   " + TSClient.sharedInstance().dxList[i].description + "\n"
+                print(dxText)
             }//for
             //Display the result
             self.diagnosis.text = dxText
         }else{
             //Clear the diagnosis list if empty
-            self.ptDiagnosis.detailTextLabel?.text = "None Selected"
+            self.diagnosis.text = ""
+            //self.ptDiagnosis.detailTextLabel?.text = ""
         }//if/else
         
         //Check therapy struct, if there is data use the practice name to fill in the field
@@ -146,7 +152,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
     
     //If this is omitted, it screws up touch recognition
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 9   //The total number of table rows in the view
+        return 10   //The total number of table rows in the view
         
     }//numberOfRows in Section
     
@@ -339,7 +345,7 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
             self.diagnosis.text = ""
             TSClient.sharedInstance().dxList = []
             //Reset the prescription data
-            self.ptDiagnosis.detailTextLabel?.text = "None Selected"
+            //self.ptDiagnosis.detailTextLabel?.text = "None Selected"
             self.therapyLocation.detailTextLabel?.text = "None Selected"
             self.therapyRx.detailTextLabel?.text = "None Selected"
             //self.deliveryMethod.detailTextLabel?.text = "None Selected"
