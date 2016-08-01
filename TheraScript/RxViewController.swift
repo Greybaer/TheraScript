@@ -387,7 +387,9 @@ class RxViewController: UITableViewController, UITextFieldDelegate {
     //***************************************************
     func checkPatientData() -> Bool{
         //Are all the fields complete?
-        if (ptName.text!.isEmpty || ptAddress.text!.isEmpty  || ptZip.text!.isEmpty || ptPhone.text!.isEmpty) {
+        //8/1/16 - Removed requirement for street address. Search may be a bit less
+        //exact, however it's usually pretty good.
+        if (ptName.text!.isEmpty /*|| ptAddress.text!.isEmpty*/  || ptZip.text!.isEmpty || ptPhone.text!.isEmpty) {
                 //No, return false
                 return false
         }else{
